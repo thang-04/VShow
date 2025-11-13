@@ -1,0 +1,40 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: event-catalog-svc
+  
+  # MySQL
+  datasource:
+    url: jdbc:mysql://localhost:3306/vshow_events?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 12345
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+# Eureka Client
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true   # Lấy danh sách service từ Eureka
+    register-with-eureka: true  # Đăng ký service này với Eureka
+  instance:
+    prefer-ip-address: true  # Dùng IP thay vì hostname
+
+# Logging
+logging:
+  level:
+    com.vticket.eventcatalog: DEBUG  # Log chi tiết cho package eventcatalog
+    org.hibernate.SQL: DEBUG  # Log tất cả SQL
+    root: INFO  # Log level chung
+

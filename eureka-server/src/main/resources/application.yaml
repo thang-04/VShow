@@ -1,0 +1,12 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  client:
+    register-with-eureka: false   # ko đăng ký chính nó (chỉ client mới cần đăng ký)
+    fetch-registry: false         # ko cần fetch danh sách service khác (vì đây là "server" trung tâm)
+

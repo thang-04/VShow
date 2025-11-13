@@ -1,0 +1,52 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: identity-svc
+  
+  # MySQL
+  datasource:
+    url: jdbc:mysql://localhost:3306/vshow_identity?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 12345
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+  
+  # MongoDB
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/vshow_identity
+
+# Config Eureka Client
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true   # Lấy danh sách service từ Eureka
+    register-with-eureka: true  # Đăng ký service này với Eureka
+  instance:
+    prefer-ip-address: true  # Dùng IP thay vì hostname
+
+# JWT
+jwt:
+  signerKey: ${JWT_SIGNER_KEY:your-256-bit-secret-key-must-be-at-least-32-characters-long-for-hmac-sha256}
+  accessTokenExpirationMinutes: 60
+  refreshTokenExpirationDays: 7
+
+# Logging
+logging:
+  level:
+    com.vticket.identity: DEBUG  # Log chi tiết cho package identity
+    org.springframework.security: DEBUG  # Log chi tiết cho Spring Security
+    org.hibernate.SQL: DEBUG  # Log tất cả SQL
+    root: INFO  # Log level chung
+
