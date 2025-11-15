@@ -1,14 +1,17 @@
 package com.vticket.identity.infra.jwt;
 
 import com.vticket.identity.domain.entity.User;
+import com.vticket.identity.infra.config.KeyRegistry;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.security.interfaces.RSAPrivateKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -18,16 +21,18 @@ import java.util.Date;
 public class JwtService {
 
     private final JwtProperties jwtProperties;
+    private final KeyRegistry keyRegistry;
+    private final RSAService rsaService;
 
     public String generateAccessToken(User user) {
-        return generateToken(user, jwtProperties.getAccessTokenExpirationMinutes());
+        return generateTokenRS256(user, keyRegistry.getAccessTokenTtlSeconds());
     }
 
     public String generateRefreshToken(User user) {
-        return generateToken(user, (long) jwtProperties.getRefreshTokenExpirationDays() * 24 * 60);
+        return generateTokenRS256(user, (long)  keyRegistry.getAccessTokenTtlSeconds() * 24 * 60);
     }
 
-    private String generateToken(User user, long expirationMinutes) {
+    private String generateTokenHS256(User user, long expirationMinutes) {
         SecretKey key = Keys.hmacShaKeyFor(jwtProperties.getSignerKey().getBytes(StandardCharsets.UTF_8));
         Instant now = Instant.now();
         Instant expiration = now.plus(expirationMinutes, ChronoUnit.MINUTES);
@@ -43,7 +48,26 @@ public class JwtService {
                 .compact();
     }
 
-    public Claims parseToken(String token) {
+    public String generateTokenRS256(User user, long expirationMinutes) {
+        //get active kid
+        var active = keyRegistry.getKeys().stream()
+                .filter(k -> k.getKid().equals(keyRegistry.getActiveKid()))
+                .findFirst().orElseThrow();
+        //get private key
+        RSAPrivateKey privateKey = rsaService.loadPrivate(active.getPrivatePem());
+        Instant now = Instant.now();
+        Instant expiration = now.plus(expirationMinutes, ChronoUnit.MINUTES);
+        return Jwts.builder()
+                .header().add("kid", active.getKid()).and()
+                .issuer(keyRegistry.getIssuer())
+                .subject(user.getUsername())
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(expiration))
+                .signWith(privateKey, Jwts.SIG.RS256)
+                .compact();
+    }
+
+    public Claims parseTokenHS256(String token) {
         SecretKey key = Keys.hmacShaKeyFor(jwtProperties.getSignerKey().getBytes(StandardCharsets.UTF_8));
         return Jwts.parser()
                 .verifyWith(key)
@@ -54,7 +78,7 @@ public class JwtService {
 
     public boolean validateToken(String token) {
         try {
-            parseToken(token);
+            parseTokenHS256(token);
             return true;
         } catch (Exception e) {
             return false;
@@ -62,12 +86,12 @@ public class JwtService {
     }
 
     public String getUserIdFromToken(String token) {
-        Claims claims = parseToken(token);
+        Claims claims = parseTokenHS256(token);
         return claims.getId();
     }
 
     public String getUsernameFromToken(String token) {
-        Claims claims = parseToken(token);
+        Claims claims = parseTokenHS256(token);
         return claims.getSubject();
     }
 }

@@ -7,9 +7,9 @@ spring:
   
   # MySQL
   datasource:
-    url: jdbc:mysql://localhost:3306/vshow_events?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/vshow_events
     username: root
-    password: 12345
+    password: 1234554321
     driver-class-name: com.mysql.cj.jdbc.Driver
   
   jpa:
@@ -34,7 +34,7 @@ eureka:
 # Logging
 logging:
   level:
-    com.vticket.eventcatalog: DEBUG  # Log chi tiết cho package eventcatalog
-    org.hibernate.SQL: DEBUG  # Log tất cả SQL
-    root: INFO  # Log level chung
+    com.vticket.eventcatalog: DEBUG  # Log package eventcatalog
+    org.hibernate.SQL: DEBUG  # Log SQL
+    root: INFO  # Log chung
 

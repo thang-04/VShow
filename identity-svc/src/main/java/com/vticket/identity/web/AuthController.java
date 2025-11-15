@@ -10,10 +10,19 @@ import com.vticket.identity.app.dto.res.TokenResponse;
 import com.vticket.identity.app.usercase.LoginUseCase;
 import com.vticket.identity.app.usercase.RefreshTokenUseCase;
 import com.vticket.identity.app.usercase.RegisterUseCase;
+import com.vticket.identity.infra.config.KeyRegistry;
+import com.vticket.identity.infra.jwt.RSAService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigInteger;
+import java.security.interfaces.RSAPublicKey;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -24,6 +33,8 @@ public class AuthController {
     private final RegisterUseCase registerUseCase;
     private final LoginUseCase loginUseCase;
     private final RefreshTokenUseCase refreshTokenUseCase;
+    private final KeyRegistry keyRegistry;
+    private final RSAService rSAService;
 
     @PostMapping("/register")
     public String register(@Valid @RequestBody RegisterRequest request) {
@@ -59,6 +70,34 @@ public class AuthController {
             log.error("Token refresh failed: {}", e.getMessage(), e);
             return ResponseJson.of(ErrorCode.INVALID_REFRESH_TOKEN, e.getMessage());
         }
+    }
+
+
+    //check keys public valid
+    @GetMapping("/jwks")
+    public Map<String, Object> jwks() {
+        List<Map<String, Object>> keys = new ArrayList<>();
+        for (var kp : keyRegistry.getKeys()) {
+            //get public key
+            RSAPublicKey pub = rSAService.loadPublicKey(kp.getPublicPem());
+            //get modulus(n) and exponent(e) from public key
+            String n = base64Url(pub.getModulus());
+            String e = base64Url(pub.getPublicExponent());
+            keys.add(Map.of(
+                    "kty", "RSA",
+                    "kid", kp.getKid(),
+                    "alg", "RS256",
+                    "use", "sig",
+                    "n", n,
+                    "e", e
+            ));
+        }
+        return Map.of("keys", keys);
+    }
+
+    private static String base64Url(BigInteger bi) {
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bi.toByteArray())
+                .replaceFirst("^AA+", "");
     }
 }
 

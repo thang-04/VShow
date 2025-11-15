@@ -8,9 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.time.Instant;
-
 /**
  * Filter này ghi log cho tất cả request đi qua Gateway
  *
@@ -45,20 +42,19 @@ public class GlobalLoggingFilter implements GlobalFilter, Ordered {
         String correlationId = exchange.getRequest().getHeaders().getFirst("X-Correlation-ID");
         String path = exchange.getRequest().getURI().getPath();
         String method = exchange.getRequest().getMethod().name();
-        Instant startTime = Instant.now();
+        long startTime = System.currentTimeMillis();
 
         log.info("Incoming request - Method: {}, Path: {}, Correlation-ID: {}",
                 method, path, correlationId);
 
         // then() = chạy sau khi chain.filter() done
         return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-            long duration = Duration.between(startTime, Instant.now()).toMillis();
             int statusCode = exchange.getResponse().getStatusCode() != null
                     ? exchange.getResponse().getStatusCode().value() : 0;
             String corrId = exchange.getRequest().getHeaders().getFirst("X-Correlation-ID");
 
             log.info("Outgoing response - Method: {}, Path: {}, Status: {}, Duration: {}ms, Correlation-ID: {}",
-                    method, path, statusCode, duration, corrId != null ? corrId : correlationId);
+                    method, path, statusCode, (System.currentTimeMillis()-startTime), corrId != null ? corrId : correlationId);
         }));
     }
 

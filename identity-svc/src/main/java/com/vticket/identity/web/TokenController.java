@@ -19,15 +19,15 @@ public class TokenController {
     private final IntrospectTokenUseCase introspectTokenUseCase;
 
     @PostMapping("/introspect")
-    public ResponseEntity<String> introspect(@Valid @RequestBody IntrospectRequest request) {
+    public String introspect(@Valid @RequestBody IntrospectRequest request) {
         try {
             log.info("Token introspection request");
             IntrospectResponse response = introspectTokenUseCase.execute(request);
-            return ResponseEntity.ok(ResponseJson.success("Token introspection", response));
+            return ResponseJson.success("Token introspection", response);
         } catch (Exception e) {
             log.error("Token introspection failed: {}", e.getMessage(), e);
-            return ResponseEntity.ok(ResponseJson.success("Token introspection", 
-                    IntrospectResponse.builder().valid(false).build()));
+            return ResponseJson.success("Token introspection",
+                    IntrospectResponse.builder().valid(false).build());
         }
     }
 }

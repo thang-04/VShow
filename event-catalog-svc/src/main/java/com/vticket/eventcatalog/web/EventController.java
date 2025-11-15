@@ -27,7 +27,7 @@ public class EventController {
     private final GetEventUseCase getEventUseCase;
 
     @GetMapping
-    public String listEvents(@RequestParam(required = false) Long categoryId) {
+    public String listEvents(@RequestParam(name = "categoryId",required = false) Long categoryId) {
         try {
             List<EventResponse> events;
             if (categoryId != null) {
@@ -43,7 +43,7 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public String getEvent(@PathVariable Long id) {
+    public String getEvent(@PathVariable("id") Long id) {
         try {
             EventResponse event = getEventUseCase.execute(id);
             return ResponseJson.success("Event details", event);
@@ -66,7 +66,7 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public String updateEvent(@PathVariable Long id,
+    public String updateEvent(@PathVariable("id") Long id,
                               @Valid @RequestBody UpdateEventRequest request) {
         try {
             log.info("Update event request for id: {}", id);

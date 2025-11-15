@@ -23,7 +23,7 @@ public class IntrospectTokenUseCase {
                         .build();
             }
 
-            Claims claims = jwtService.parseToken(request.getToken());
+            Claims claims = jwtService.parseTokenHS256(request.getToken());
             Date issuedAt = claims.getIssuedAt();
             Date expiration = claims.getExpiration();
 

@@ -9,11 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- * - Gateway đã xử lý JWT authentication
- * - Identity Service chỉ cần cho phép các endpoint công khai (login, register)
- * - Các endpoint khác sẽ được bảo vệ bởi Gateway
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -27,7 +22,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
 
-                // Cấu hình session management
+                // Config session management
                 // STATELESS = Không lưu session trên server (dùng JWT thay vì session)
                 // Mỗi request phải gửi kèm JWT token
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

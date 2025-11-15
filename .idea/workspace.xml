@@ -4,7 +4,40 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cb5f6cae-dd73-42aa-a2d9-82bb02b0b6c7" name="Changes" comment="" />
+    <list default="true" id="cb5f6cae-dd73-42aa-a2d9-82bb02b0b6c7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/utils/RSAEncryptUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/config/KeyRegistry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jwt/RSAService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/resources/properties/cert/k1-private.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/resources/properties/cert/k1-public.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-libs/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/common-libs/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/utils/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/utils/CommonUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/utils/ResponseJson.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/utils/ResponseJson.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-libs/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/common-libs/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/EventCatalogApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/EventCatalogApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/web/EventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/web/EventController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/config/GatewayRouteConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/config/GatewayRouteConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/GlobalLoggingFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/GlobalLoggingFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/IdentityApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/IdentityApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/IntrospectTokenUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/IntrospectTokenUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/RefreshTokenUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/RefreshTokenUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jwt/JwtProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jwt/JwtProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jwt/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jwt/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/TokenController.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/TokenController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/resources/application.yaml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +50,21 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "thang-04"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/thang-04/VShow.git",
+    "accountId": "2d39dbb7-5fdf-4849-929b-1007c0c924a7"
+  }
+}]]></component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -28,6 +76,9 @@
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="35I8STbVw9bY3bkS5xZI4VFFivU" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -47,14 +98,18 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.CommonLib.executor": "Run",
     "Spring Boot.EurekaServerApplication.executor": "Run",
     "Spring Boot.EventCatalogApplication.executor": "Run",
     "Spring Boot.GatewayApplication.executor": "Run",
     "Spring Boot.IdentityApplication.executor": "Run",
+    "git-widget-placeholder": "gateway",
     "ignore.virus.scanning.warn.message": "true",
     "jdk.selected.JAVA_MODULE": "21",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/PC/VShow",
+    "last_opened_file_path": "D:/Inteliji-Project/VShow/identity-svc/src/main/resources/properties",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -67,6 +122,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Inteliji-Project\VShow\identity-svc\src\main\resources\properties" />
       <recent name="D:\Inteliji-Project\VShow" />
       <recent name="D:\Inteliji-Project\VShow\.idea" />
     </key>
@@ -80,8 +136,19 @@
         <option value="SpringBootApplicationConfigurationType" />
       </set>
     </option>
+    <option name="hiddenConfigurations">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <set>
+              <option value="CommonLib" />
+            </set>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.IdentityApplication">
+  <component name="RunManager" selected="Spring Boot.CommonLib">
     <configuration name="CommonLib" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="common-libs" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.vticket.commonlibs.CommonLib" />
@@ -112,6 +179,9 @@
       </method>
     </configuration>
     <configuration name="IdentityApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <envs>
+        <env name="JWT_SIGNER_KEY" value="cdOjoneRSm7ajl1RsOznZmSEYkd+6NnRN5S7fj2QtH/Rhheb6QnC8m1SGzznV75D" />
+      </envs>
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="identity-svc" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.vticket.identity.IdentityApplication" />
@@ -139,8 +209,8 @@
       <item itemvalue="Spring Boot.CommonLib" />
       <item itemvalue="Spring Boot.EurekaServerApplication" />
       <item itemvalue="Spring Boot.EventCatalogApplication" />
-      <item itemvalue="Spring Boot.GatewayApplication" />
       <item itemvalue="Spring Boot.IdentityApplication" />
+      <item itemvalue="Spring Boot.GatewayApplication" />
     </list>
   </component>
   <component name="SharedIndexes">
@@ -166,6 +236,8 @@
       <workItem from="1763025400056" duration="2335000" />
       <workItem from="1763045276885" duration="130000" />
       <workItem from="1763045414305" duration="1445000" />
+      <workItem from="1763082941281" duration="21544000" />
+      <workItem from="1763197529871" duration="1986000" />
     </task>
     <servers />
   </component>

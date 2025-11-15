@@ -7,9 +7,9 @@ spring:
   
   # MySQL
   datasource:
-    url: jdbc:mysql://localhost:3306/vshow_identity?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/vshow_identity
     username: root
-    password: 12345
+    password: 1234554321
     driver-class-name: com.mysql.cj.jdbc.Driver
   
   jpa:
@@ -26,7 +26,7 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/vshow_identity
 
-# Config Eureka Client
+# Eureka Client
 eureka:
   client:
     service-url:
@@ -37,16 +37,27 @@ eureka:
     prefer-ip-address: true  # Dùng IP thay vì hostname
 
 # JWT
-jwt:
-  signerKey: ${JWT_SIGNER_KEY:your-256-bit-secret-key-must-be-at-least-32-characters-long-for-hmac-sha256}
-  accessTokenExpirationMinutes: 60
-  refreshTokenExpirationDays: 7
+security:
+  jwt:
+    signerKey: ${JWT_SIGNER_KEY}
+    accessTokenExpirationMinutes: 60
+    refreshTokenExpirationDays: 7
+
+    issuer: vticket-identity
+    access-token-ttl-seconds: 3600
+
+    active-kid: k1
+
+    keys:
+      - kid: k1
+        private-pem: classpath:properties.cert/k1-private.pem
+        public-pem: classpath:properties.cert/k1-public.pem
 
 # Logging
 logging:
   level:
-    com.vticket.identity: DEBUG  # Log chi tiết cho package identity
-    org.springframework.security: DEBUG  # Log chi tiết cho Spring Security
-    org.hibernate.SQL: DEBUG  # Log tất cả SQL
-    root: INFO  # Log level chung
+    com.vticket.identity: DEBUG  # Log package identity
+    org.springframework.security: DEBUG  # Log Spring Security
+    org.hibernate.SQL: DEBUG  # Log SQL
+    root: INFO  # Log chung
 

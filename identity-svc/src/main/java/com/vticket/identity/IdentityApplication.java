@@ -7,14 +7,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
- * KIẾN TRÚC:
- * - Domain Layer: Business logic và entities (User, Role)
- * - Application Layer: Use cases (LoginUseCase, RegisterUseCase...)
- * - Infrastructure Layer: 
- *    - JPA: Tương tác với database (MySQL)
- *    - JWT: Tạo và verify JWT tokens
- * - Web Layer: REST Controllers (AuthController, TokenController)
- * ANNOTATIONS:
  * - @SpringBootApplication: Đánh dấu đây là Spring Boot application
  * - scanBasePackages: Chỉ scan các package trong "com.vticket.identity"
  * - @EnableJpaRepositories: Kích hoạt JPA repositories

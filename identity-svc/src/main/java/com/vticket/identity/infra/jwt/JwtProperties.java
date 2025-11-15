@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class JwtProperties {
-    @Value("${jwt.signerKey}")
+    @Value("${security.jwt.signerKey}")
     private String signerKey;
-    @Value("${jwt.accessTokenExpirationMinutes}")
+    @Value("${security.jwt.accessTokenExpirationMinutes}")
     private int accessTokenExpirationMinutes;
-    @Value("${jwt.refreshTokenExpirationDays}")
+    @Value("${security.jwt.refreshTokenExpirationDays}")
     private int refreshTokenExpirationDays;
 }
 

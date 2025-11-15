@@ -25,7 +25,7 @@ spring:
             # bỏ header trùng lặp trong CORS response
             - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
           routes:
-            # Route 1: Identity Service (Xác thực người dùng)
+            # Route 1: Identity Service
             - id: identity-service
               # lb:// = Load Balancer - Gateway sẽ tự động tìm service qua Eureka
               # identity-svc = Tên service đã đăng ký trong Eureka
@@ -38,7 +38,7 @@ spring:
               filters:
                 - StripPrefix=0
 
-            # Route 2: Event Catalog Service (Quản lý sự kiện)
+            # Route 2: Event Catalog Service
             - id: event-catalog-service
               uri: lb://event-catalog-svc
               predicates:
@@ -64,13 +64,24 @@ eureka:
 
 # JWT
 jwt:
-  signerKey: ${JWT_SIGNER_KEY:your-256-bit-secret-key-must-be-at-least-32-characters-long-for-hmac-sha256}
+  signerKey: ${JWT_SIGNER_KEY:secret-key-for-hmac-sha256}
+
+  jwks-url: http://identity-svc:8081/oauth/jwks
+  issuer: vticket-identity
+  whitelist:
+    - /auth/**
+    - /oauth/**
+    - /api/identity/auth/login
+    - /api/identity/auth/register
+    - /api/identity/token/introspect
+    - /api/events
+    - /api/events/**
 
 # Logging
 logging:
   level:
-    com.vticket.gateway: DEBUG  # Log chi tiết cho package gateway
-    org.springframework.cloud.gateway: DEBUG  # Log chi tiết cho Spring Cloud Gateway
-    org.springframework.web: DEBUG  # Log chi tiết cho Spring Web
-    root: INFO  # Log level chung cho toàn bộ ứng dụng
+    com.vticket.gateway: DEBUG  # Log package gateway
+    org.springframework.cloud.gateway: DEBUG  # Log Spring Cloud Gateway
+    org.springframework.web: DEBUG  # Log Spring Web
+    root: INFO  # Log all project
 
