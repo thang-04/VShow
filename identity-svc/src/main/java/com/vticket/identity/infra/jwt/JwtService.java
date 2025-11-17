@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +31,43 @@ public class JwtService {
     }
 
     public String generateRefreshToken(User user) {
-        return generateTokenRS256(user, (long)  keyRegistry.getAccessTokenTtlSeconds() * 24 * 60);
+        return generateTokenRS256(user, (long) keyRegistry.getAccessTokenTtlSeconds() * 24 * 60);
+    }
+
+    public String generateTokenRS256(User user, long expirationMinutes) {
+        //get active kid
+        var active = keyRegistry.getKeys().stream()
+                .filter(k -> k.getKid().equals(keyRegistry.getActiveKid()))
+                .findFirst().orElseThrow();
+        //get private key
+        RSAPrivateKey privateKey = rsaService.loadPrivate(active.getPrivatePem());
+        Instant now = Instant.now();
+        Instant expiration = now.plus(expirationMinutes, ChronoUnit.MINUTES);
+        String uuid = UUID.randomUUID().toString();
+        return Jwts.builder()
+                .header().add("kid", active.getKid()).and()
+                .issuer(keyRegistry.getIssuer())
+                .subject(user.getUsername())
+                .claim("uuid", uuid)
+                .claim("email",user.getEmail())
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(expiration))
+                .signWith(privateKey, Jwts.SIG.RS256)
+                .compact();
+    }
+
+    public Claims parseTokenRS256(String token) {
+        //get active kid
+        var active = keyRegistry.getKeys().stream()
+                .filter(k -> k.getKid().equals(keyRegistry.getActiveKid()))
+                .findFirst().orElseThrow();
+        //get public key
+        RSAPublicKey key = rsaService.loadPublicKey(active.getPublicPem());
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     private String generateTokenHS256(User user, long expirationMinutes) {
@@ -48,25 +86,6 @@ public class JwtService {
                 .compact();
     }
 
-    public String generateTokenRS256(User user, long expirationMinutes) {
-        //get active kid
-        var active = keyRegistry.getKeys().stream()
-                .filter(k -> k.getKid().equals(keyRegistry.getActiveKid()))
-                .findFirst().orElseThrow();
-        //get private key
-        RSAPrivateKey privateKey = rsaService.loadPrivate(active.getPrivatePem());
-        Instant now = Instant.now();
-        Instant expiration = now.plus(expirationMinutes, ChronoUnit.MINUTES);
-        return Jwts.builder()
-                .header().add("kid", active.getKid()).and()
-                .issuer(keyRegistry.getIssuer())
-                .subject(user.getUsername())
-                .issuedAt(Date.from(now))
-                .expiration(Date.from(expiration))
-                .signWith(privateKey, Jwts.SIG.RS256)
-                .compact();
-    }
-
     public Claims parseTokenHS256(String token) {
         SecretKey key = Keys.hmacShaKeyFor(jwtProperties.getSignerKey().getBytes(StandardCharsets.UTF_8));
         return Jwts.parser()
@@ -78,7 +97,7 @@ public class JwtService {
 
     public boolean validateToken(String token) {
         try {
-            parseTokenHS256(token);
+            parseTokenRS256(token);
             return true;
         } catch (Exception e) {
             return false;
@@ -86,12 +105,12 @@ public class JwtService {
     }
 
     public String getUserIdFromToken(String token) {
-        Claims claims = parseTokenHS256(token);
+        Claims claims = parseTokenRS256(token);
         return claims.getId();
     }
 
     public String getUsernameFromToken(String token) {
-        Claims claims = parseTokenHS256(token);
+        Claims claims = parseTokenRS256(token);
         return claims.getSubject();
     }
 }

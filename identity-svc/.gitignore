@@ -31,4 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
-!**/src/main/resources/properties/cert
+
+# Ignore all PEM keys
+src/main/resources/properties/cert/*.pem
+*.pem

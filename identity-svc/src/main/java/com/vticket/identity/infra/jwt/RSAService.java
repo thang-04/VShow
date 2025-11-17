@@ -2,8 +2,11 @@ package com.vticket.identity.infra.jwt;
 
 import com.vticket.commonlibs.utils.RSAEncryptUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
@@ -22,7 +25,11 @@ public class RSAService {
                 log.error("{}|FilePath invalid input:{}", prefix, filePath);
                 return null;
             }
-            String key = RSAEncryptUtil.readFileAsString(filePath);
+            String path = filePath.replace("classpath:", "");
+            Resource resource = new ClassPathResource(path);
+
+            String key = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+
             key = key.replace("-----BEGIN PRIVATE KEY-----", "")
                     .replace("-----END PRIVATE KEY-----", "")
                     .replaceAll("\\s", "");
@@ -44,7 +51,11 @@ public class RSAService {
                 log.error("{}|FilePath invalid input:{}", prefix, filePath);
                 return null;
             }
-            String key = RSAEncryptUtil.readFileAsString(filePath);
+            String path = filePath.replace("classpath:", "");
+            Resource resource = new ClassPathResource(path);
+
+            String key = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+
             key = key.replace("-----BEGIN PUBLIC KEY-----", "")
                     .replace("-----END PUBLIC KEY-----", "")
                     .replaceAll("\\s", "");

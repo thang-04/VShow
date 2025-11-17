@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -29,9 +30,11 @@ import java.util.List;
  * - Payload: Thông tin người dùng (claims)
  * - Signature: Chữ ký để verify token không bị giả mạo
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
+    private static final String PREFIX="[JwtAuthenticationFilter]|";
 
 //    @Value("${jwt.signerKey:your-256-bit-secret-key-must-be-at-least-32-characters-long}")
 //    private String signerKey;
@@ -53,7 +56,8 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
             "/api/identity/auth/login",
             "/api/identity/auth/register",
             "/api/identity/token/introspect",
-            "/api/events/**"
+            "/api/events/**",
+            "/api/identity/auth/jwks"
     );
 
     private final AntPathMatcher matcher = new AntPathMatcher();
@@ -70,10 +74,13 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
      */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        String logPrefix="[filter]|";
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getURI().getPath();
+        log.info("{}Request path: {} ",PREFIX+logPrefix, path);
         //check if public path
         if (isPublicPath(path)) {
+            log.info("{}|Public path [{}]",logPrefix, path);
             return chain.filter(exchange);
         }
         String authHeader = request.getHeaders().getFirst("Authorization");
@@ -81,6 +88,20 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
             return onError(exchange, "Missing or invalid Authorization header", HttpStatus.UNAUTHORIZED);
         }
         String token = authHeader.substring(7);
+
+        return jwtValidator.validate(token)
+                .flatMap(jwt -> {
+                    //config info to service downstream
+                    ServerHttpRequest modifiedReq = request.mutate()
+                            .header("X-USER-ID", jwt.getClaimAsString("sub"))
+                            .header("X-USERNAME", jwt.getClaimAsString("username"))
+                            .build();
+
+                    return chain.filter(exchange.mutate().request(modifiedReq).build());
+                })
+                .onErrorResume(err ->
+                        onError(exchange, "Invalid or expired token: " + err.getMessage(), HttpStatus.UNAUTHORIZED)
+                );
 
 //        try {
 //            SecretKey key = Keys.hmacShaKeyFor(signerKey.getBytes(StandardCharsets.UTF_8));
@@ -101,20 +122,6 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
 //        } catch (Exception e) {
 //            return onError(exchange, "Invalid or expired token: " + e.getMessage(), HttpStatus.UNAUTHORIZED);
 //        }
-        return jwtValidator.validate(token)
-                .flatMap(jwt -> {
-                    //config info to service downstream
-                    ServerHttpRequest modifiedReq = request.mutate()
-                            .header("X-USER-ID", jwt.getClaimAsString("sub"))
-                            .header("X-USERNAME", jwt.getClaimAsString("username"))
-                            .build();
-
-                    return chain.filter(exchange.mutate().request(modifiedReq).build());
-                })
-                .onErrorResume(err ->
-                        onError(exchange, "Invalid or expired token: " + err.getMessage(), HttpStatus.UNAUTHORIZED)
-                );
-
     }
 
     //    private boolean isPublicPath(String path) {

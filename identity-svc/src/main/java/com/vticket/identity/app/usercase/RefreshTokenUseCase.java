@@ -26,7 +26,7 @@ public class RefreshTokenUseCase {
             throw new AppException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
-        Claims claims = jwtService.parseTokenHS256(request.getRefreshToken());
+        Claims claims = jwtService.parseTokenRS256(request.getRefreshToken());
         String userId = claims.getId();
 
         User user = userRepository.findById(userId)

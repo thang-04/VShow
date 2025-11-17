@@ -4,11 +4,31 @@ server:
 spring:
   application:
     name: gateway
-
   cloud:
     gateway:
       server:
         webflux:
+          routes:
+            # Route 1: Identity Service
+            - id: identity-service
+              # lb:// = Load Balancer - Gateway sẽ tự động tìm service qua Eureka
+              # identity-svc = Tên service đã đăng ký trong Eureka
+              uri: lb://identity-svc
+              # Predicate: Điều kiện để route này được áp dụng
+              # Path=/api/identity/** = Tất cả request có path bắt đầu bằng /api/identity/
+              predicates:
+                - Path=/api/identity/**
+              # Filters: Các bộ lọc áp dụng cho route này
+              filters:
+                - StripPrefix=0 # Giữ nguyên path gốc khi request
+
+            # Route 2: Event Catalog Service
+            - id: event-catalog-service
+              uri: lb://event-catalog-svc
+              predicates:
+                - Path=/api/events/**
+              filters:
+                - StripPrefix=0
           globals:
             cors-configurations:
               '[/**]': # Áp dụng cho tất cả paths
@@ -24,27 +44,6 @@ spring:
           default-filters:
             # bỏ header trùng lặp trong CORS response
             - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-          routes:
-            # Route 1: Identity Service
-            - id: identity-service
-              # lb:// = Load Balancer - Gateway sẽ tự động tìm service qua Eureka
-              # identity-svc = Tên service đã đăng ký trong Eureka
-              uri: lb://identity-svc
-              # Predicate: Điều kiện để route này được áp dụng
-              # Path=/api/identity/** = Tất cả request có path bắt đầu bằng /api/identity/
-              predicates:
-                - Path=/api/identity/**
-              # Filters: Các bộ lọc áp dụng cho route này
-              filters:
-                - StripPrefix=0
-
-            # Route 2: Event Catalog Service
-            - id: event-catalog-service
-              uri: lb://event-catalog-svc
-              predicates:
-                - Path=/api/events/**
-              filters:
-                - StripPrefix=0
 
 # Redis
 redis:
@@ -66,7 +65,7 @@ eureka:
 jwt:
   signerKey: ${JWT_SIGNER_KEY:secret-key-for-hmac-sha256}
 
-  jwks-url: http://identity-svc:8081/oauth/jwks
+  jwks-url: http://localhost:8081/api/identity/auth/jwks
   issuer: vticket-identity
   whitelist:
     - /auth/**

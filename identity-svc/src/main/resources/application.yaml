@@ -9,7 +9,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/vshow_identity
     username: root
-    password: 1234554321
+    password: 12345
     driver-class-name: com.mysql.cj.jdbc.Driver
   
   jpa:
@@ -50,8 +50,8 @@ security:
 
     keys:
       - kid: k1
-        private-pem: classpath:properties.cert/k1-private.pem
-        public-pem: classpath:properties.cert/k1-public.pem
+        private-pem: classpath:properties/cert/k1-private.pem
+        public-pem: classpath:properties/cert/k1-public.pem
 
 # Logging
 logging:
