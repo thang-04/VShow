@@ -1,5 +1,6 @@
 package com.vticket.gateway.filter;
 
+import com.vticket.gateway.config.SecurityRuleConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -34,37 +35,19 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
-    private static final String PREFIX="[JwtAuthenticationFilter]|";
+    private static final String PREFIX = "[JwtAuthenticationFilter]|";
 
-//    @Value("${jwt.signerKey:your-256-bit-secret-key-must-be-at-least-32-characters-long}")
-//    private String signerKey;
-//
-//    private static final List<String> PUBLIC_PATHS = List.of(
-//            "/api/identity/auth/login",
-//            "/api/identity/auth/register",
-//            "/api/identity/token/introspect",
-//            "/api/events",
-//            "/api/events/"
-//    );
-
+    private final SecurityRuleConfig securityRuleConfig;
     private final JwtValidator jwtValidator;
-
-    //    @Value("#{'${jwt.whitelist}'}")
-    private static final List<String> publicPaths = List.of(
-            "/oauth/**",
-            "/auth/**",
-            "/api/identity/auth/login",
-            "/api/identity/auth/register",
-            "/api/identity/token/introspect",
-            "/api/events/**",
-            "/api/identity/auth/jwks"
-    );
-
     private final AntPathMatcher matcher = new AntPathMatcher();
 
-    private boolean isPublicPath(String path) {
-        return publicPaths.stream()
-                .anyMatch(pattern -> matcher.match(pattern, path));
+    private boolean isPublicPath(String method, String path) {
+        return securityRuleConfig.getPublic_api().stream().anyMatch(rule -> {
+            String[] parts = rule.split(":");
+            return parts.length == 2
+                    && parts[0].equalsIgnoreCase(method)
+                    && matcher.match(parts[1], path);
+        });
     }
 
     /**
@@ -74,13 +57,15 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
      */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        String logPrefix="[filter]|";
+        String logPrefix = "[filter]|";
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getURI().getPath();
-        log.info("{}Request path: {} ",PREFIX+logPrefix, path);
+        String method = request.getMethod().name();
+
+        log.info("{}Request path:{} {} ", PREFIX + logPrefix, method, path);
         //check if public path
-        if (isPublicPath(path)) {
-            log.info("{}|Public path [{}]",logPrefix, path);
+        if (isPublicPath(method, path)) {
+            log.info("{}|Public Api [{}: {}]", logPrefix, method, path);
             return chain.filter(exchange);
         }
         String authHeader = request.getHeaders().getFirst("Authorization");
@@ -135,11 +120,13 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
      * @return Mono<Void>
      */
     private Mono<Void> onError(ServerWebExchange exchange, String message, HttpStatus status) {
+        log.error("[ERROR] {} - {}", status, message);
+
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(status);
         response.getHeaders().add("Content-Type", "application/json");
 
-        String errorBody = String.format(
+        String body = String.format(
                 "{\"code\":%d,\"codeName\":\"%s\",\"desc\":\"%s\"}",
                 status.value() == 401 ? 1006 : -9999,  // Error code
                 status.value() == 401 ? "UNAUTHENTICATED" : "ERROR_CODE_EXCEPTION",  // Error name
@@ -147,7 +134,7 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         );
 
         return response.writeWith(
-                Mono.just(response.bufferFactory().wrap(errorBody.getBytes(StandardCharsets.UTF_8)))
+                Mono.just(response.bufferFactory().wrap(body.getBytes()))
         );
     }
 

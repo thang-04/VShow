@@ -5,21 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb5f6cae-dd73-42aa-a2d9-82bb02b0b6c7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.edit.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/config/SecurityRuleConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/GatewayApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/GatewayApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtValidator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/IntrospectTokenUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/IntrospectTokenUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/RefreshTokenUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/RefreshTokenUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jwt/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jwt/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jwt/RSAService.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jwt/RSAService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,22 +127,8 @@
         </entry>
       </map>
     </option>
-    <option name="configurationStatuses">
-      <map>
-        <entry key="SpringBootApplicationConfigurationType">
-          <value>
-            <map>
-              <entry key="EurekaServerApplication" value="STOPPED" />
-              <entry key="EventCatalogApplication" value="STOPPED" />
-              <entry key="GatewayApplication" value="STOPPED" />
-              <entry key="IdentityApplication" value="STOPPED" />
-            </map>
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.CommonLib">
+  <component name="RunManager" selected="Spring Boot.GatewayApplication">
     <configuration name="CommonLib" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="common-libs" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.vticket.commonlibs.CommonLib" />
@@ -213,8 +196,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.300" />
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.300" />
       </set>
     </attachedChunks>
   </component>
@@ -235,11 +218,25 @@
       <workItem from="1763045414305" duration="1445000" />
       <workItem from="1763082941281" duration="21544000" />
       <workItem from="1763197529871" duration="7545000" />
-      <workItem from="1763344595942" duration="6612000" />
+      <workItem from="1763344595942" duration="7018000" />
+      <workItem from="1763427691083" duration="5934000" />
+      <workItem from="1763514260336" duration="3022000" />
+      <workItem from="1763562106353" duration="2796000" />
+      <workItem from="1763569996208" duration="304000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="org.springframework.util.PlaceholderResolutionException" package="org.springframework.util" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

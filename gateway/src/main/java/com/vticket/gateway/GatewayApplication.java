@@ -3,6 +3,7 @@ package com.vticket.gateway;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * 1. Client chỉ cần biết địa chỉ của Gateway (ví dụ: localhost:8080)
