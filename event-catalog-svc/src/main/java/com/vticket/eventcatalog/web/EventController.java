@@ -37,7 +37,7 @@ public class EventController {
             }
             return ResponseJson.success("List of events", events);
         } catch (Exception e) {
-            log.error("Failed to list events: {}", e.getMessage(), e);
+            log.error("Exception: {}", e.getMessage(), e);
             return ResponseJson.of(ErrorCode.ERROR_CODE_EXCEPTION, e.getMessage());
         }
     }
@@ -48,7 +48,7 @@ public class EventController {
             EventResponse event = getEventUseCase.execute(id);
             return ResponseJson.success("Event details", event);
         } catch (Exception e) {
-            log.error("Failed to get event: {}", e.getMessage(), e);
+            log.error("Exception: {}", e.getMessage(), e);
             return ResponseJson.of(ErrorCode.EVENT_NOT_FOUND, e.getMessage());
         }
     }
@@ -60,7 +60,7 @@ public class EventController {
             EventResponse event = createEventUseCase.execute(request);
             return ResponseJson.success("Event created successfully", event);
         } catch (Exception e) {
-            log.error("Failed to create event: {}", e.getMessage(), e);
+            log.error("Exception: {}", e.getMessage(), e);
             return ResponseJson.of(ErrorCode.INVALID_REQUEST, e.getMessage());
         }
     }
@@ -73,7 +73,7 @@ public class EventController {
             EventResponse event = updateEventUseCase.execute(id, request);
             return ResponseJson.success("Event updated successfully", event);
         } catch (Exception e) {
-            log.error("Failed to update event: {}", e.getMessage(), e);
+            log.error("Exception: {}", e.getMessage(), e);
             return ResponseJson.of(ErrorCode.EVENT_NOT_FOUND, e.getMessage());
         }
     }

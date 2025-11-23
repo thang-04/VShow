@@ -32,7 +32,8 @@ public enum ErrorCode {
     EVENT_NOT_FOUND(2002, "Event not found", HttpStatus.NOT_FOUND),
     SEAT_NOT_FOUND(2003, "Seat not found", HttpStatus.NOT_FOUND),
     PAYMENT_FAILED(3001, "Payment failed", HttpStatus.PAYMENT_REQUIRED),
-    BOOKING_NOT_FOUND(4001, "Booking not found", HttpStatus.NOT_FOUND);
+    BOOKING_NOT_FOUND(4001, "Booking not found", HttpStatus.NOT_FOUND),
+    CATEGORY_NOT_FOUND(4002, "Category not found", HttpStatus.NOT_FOUND);
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;

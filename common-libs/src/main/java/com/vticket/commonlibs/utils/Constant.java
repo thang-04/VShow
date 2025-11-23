@@ -1,0 +1,49 @@
+package com.vticket.commonlibs.utils;
+
+public class Constant {
+    public static final class RedisKey {
+        public static final String REDIS_LIST_CATEGORY = "vt:list:cate";
+        public static final String REDIS_CATEGORY_BY_ID = "vt:cate:%s";
+        public static final String ACCESS_TOKEN = "vt:payment:token:";
+        public static final String USER_ID = "vt:user:id:";
+        public static final String USER_TYPE_LOGIN = "vt:users:";
+        public static final String OTP_EMAIL = "vt:otp:email:%s";
+        public static final String PENDING_USER_EMAIL = "vt:pending:user:%s";
+        public static final String REDIS_LIST_EVENT = "vt:list:event:";
+        public static final String REDIS_EVENT_BY_ID = "vt:event:%s";
+        public static final String SEAT_LOCK = "vt:seat:lock:";
+        public static final String SEAT_HOLD = "vt:seat:hold:";
+        public static final String SEAT_STATUS = "vt:seat_status:event:";
+    }
+
+    public static final class KAFKA {
+        // Email Events
+        public static final String TOPIC_EMAIL_LOGIN = "email-login-events";
+        public static final String TOPIC_EMAIL_TICKET = "email-ticket-events";
+
+        // Consumer Group
+        public static final String GROUP_EMAIL_SERVICE = "vticket-email-service";
+    }
+
+    public static final class RABBITMQ {
+        // MAIL FIRST_LOGIN MODULE
+        public static final String QUEUE_MAIL = "mail.queue";
+        public static final String EXCHANGE_MAIL = "mail.exchange";
+        public static final String ROUTING_MAIL = "mail.routing";
+
+        //MAIL CONFIRM TICKET
+        public static final String QUEUE_MAIL_TICKET = "mail.ticket.queue";
+        public static final String EXCHANGE_MAIL_TICKET = "mail.ticket.exchange";
+        public static final String ROUTING_MAIL_TICKET = "mail.ticket.routing";
+
+        // PAYMENT MODULE
+        public static final String QUEUE_PAYMENT = "payment.queue";
+        public static final String EXCHANGE_PAYMENT = "payment.exchange";
+        public static final String ROUTING_PAYMENT = "payment.routing";
+
+        // TICKET MODULE
+        public static final String QUEUE_TICKET = "ticket.queue";
+        public static final String EXCHANGE_TICKET = "ticket.exchange";
+        public static final String ROUTING_TICKET = "ticket.routing";
+    }
+}

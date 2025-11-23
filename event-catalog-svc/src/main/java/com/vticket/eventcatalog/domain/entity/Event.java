@@ -1,8 +1,6 @@
 package com.vticket.eventcatalog.domain.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -10,6 +8,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Event {
     private Long id;
@@ -27,7 +27,7 @@ public class Event {
     private boolean active;
 
     public void update(String title, String description, BigDecimal price, String venue,
-                      LocalDateTime startTime, LocalDateTime endTime) {
+                       LocalDateTime startTime, LocalDateTime endTime) {
         this.title = title;
         this.description = description;
         this.price = price;

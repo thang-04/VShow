@@ -13,10 +13,10 @@ import java.time.Instant;
 @Component
 public class JwtValidator {
 
-    @Value("${jwt.jwks-url}")
+    @Value("${security.jwt.jwks-url}")
     private String jwksUrl;
 
-    @Value("${jwt.issuer}")
+    @Value("${security.jwt.issuer}")
     private String issuer;
 
     private NimbusReactiveJwtDecoder decoder;

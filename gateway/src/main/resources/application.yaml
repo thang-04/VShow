@@ -62,21 +62,24 @@ eureka:
     prefer-ip-address: true  # Dùng IP thay vì hostname
 
 # JWT
-jwt:
-  signerKey: ${JWT_SIGNER_KEY:secret-key-for-hmac-sha256}
+security:
+   jwt:
+    signerKey: ${JWT_SIGNER_KEY:secret-key-for-hmac-sha256}
 
-  jwks-url: http://localhost:8081/api/identity/auth/jwks
-  issuer: vticket-identity
-  whitelist:
-    - /auth/**
-    - /oauth/**
-    - /api/identity/auth/login
-    - /api/identity/auth/register
-    - /api/identity/token/introspect
-    - /api/events
-    - /api/events/**
+    jwks-url: http://localhost:8081/api/identity/auth/jwks
+    issuer: vticket-identity
+    public_api:
+      - GET:/api/events/**
+      - POST:/api/identity/auth/login
+      - POST:/api/identity/auth/register
+      - GET:/api/identity/auth/jwks
+      - POST:/api/identity/token/introspect
+    protected_api:
+      - POST:/api/events/category/**:ADMIN
+      - POST:/api/events/**:ADMIN
+      - DELETE:/api/events/**:ADMIN
 
-# Logging
+# logging
 logging:
   level:
     com.vticket.gateway: DEBUG  # Log package gateway

@@ -1,14 +1,14 @@
 package com.vticket.eventcatalog.domain.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Category {
     private Long id;
-    private String name;
-    private String description;
+    private String categoryName;
+    private String categoryDescription;
 }
