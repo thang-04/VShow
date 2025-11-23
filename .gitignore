@@ -32,5 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
+# Ignore all PEM keys
+*.pem
 .env
-.env_gateway
