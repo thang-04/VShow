@@ -5,30 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb5f6cae-dd73-42aa-a2d9-82bb02b0b6c7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/dto/req/CreateCategoryRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/dto/req/UpdateCategoryRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/dto/res/CategoryResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/mapper/CategoryDtoMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/CreateCategoryUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/ListCategoryUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/UpdateCategoryUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/domain/repository/CategoryRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/infra/jpa/repository/CategoryJpaRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/infra/jpa/repository/impl/CategoryRepositoryImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/web/CategoryController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gateway/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/config/SecurityRuleConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/dto/req/OtpVerifyRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/OtpUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/exception/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/exception/ErrorCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-catalog-svc/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/domain/entity/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/domain/entity/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/web/EventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/web/EventController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/utils/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/utils/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/mapper/EventDtoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/mapper/EventDtoMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/CreateCategoryUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/CreateCategoryUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/CreateEventUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/CreateEventUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/GetEventUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/GetEventUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/ListCategoryUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/ListCategoryUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/ListEventUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/ListEventUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/UpdateCategoryUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/UpdateCategoryUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/UpdateEventUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/app/usercase/UpdateEventUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/AuthController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,23 +91,24 @@
     "Spring Boot.EventCatalogApplication.executor": "Run",
     "Spring Boot.GatewayApplication.executor": "Run",
     "Spring Boot.IdentityApplication.executor": "Run",
-    "git-widget-placeholder": "event-svc",
+    "git-widget-placeholder": "identify-svc",
     "ignore.virus.scanning.warn.message": "true",
     "jdk.selected.JAVA_MODULE": "21",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Inteliji-Project/VShow/identity-svc/src/main/resources/properties",
+    "last_opened_file_path": "C:/Users/PC/VShow",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "MavenSettings",
+    "settings.editor.selected.configurable": "preferences.keymap",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\PC\VShow" />
       <recent name="D:\Inteliji-Project\VShow\identity-svc\src\main\resources\properties" />
       <recent name="D:\Inteliji-Project\VShow" />
       <recent name="D:\Inteliji-Project\VShow\.idea" />
@@ -139,20 +130,6 @@
             <set>
               <option value="CommonLib" />
             </set>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="configurationStatuses">
-      <map>
-        <entry key="SpringBootApplicationConfigurationType">
-          <value>
-            <map>
-              <entry key="EurekaServerApplication" value="STOPPED" />
-              <entry key="EventCatalogApplication" value="STOPPED" />
-              <entry key="GatewayApplication" value="STOPPED" />
-              <entry key="IdentityApplication" value="STOPPED" />
-            </map>
           </value>
         </entry>
       </map>
@@ -269,5 +246,12 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

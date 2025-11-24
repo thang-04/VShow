@@ -12,5 +12,7 @@ public interface EventDtoMapper {
     EventResponse toResponse(Event event);
 
     List<EventResponse> toResponseList(List<Event> events);
+
+    List<Event> toEntityList(List<Event> list);
 }
 
