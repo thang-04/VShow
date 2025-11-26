@@ -16,8 +16,22 @@ public class EmailEventPublisher implements EmailPublisherPort {
     private final RabbitTemplate rabbitTemplate;
 
     @Override
-    public void publish(EmailEvent event) {
+    public void publishOtp(EmailEvent event) {
         log.info("Publish OTP event to exchange={}, routing={}",
+                Constant.RABBITMQ.DIRECT_EXCHANGE,
+                Constant.RABBITMQ.ROUTING_OTP_MAIL
+        );
+
+        rabbitTemplate.convertAndSend(
+                Constant.RABBITMQ.DIRECT_EXCHANGE,
+                Constant.RABBITMQ.ROUTING_OTP_MAIL,
+                event
+        );
+    }
+
+    @Override
+    public void publishResendOtp(EmailEvent event) {
+        log.info("Publish Resend OTP event to exchange={}, routing={}",
                 Constant.RABBITMQ.DIRECT_EXCHANGE,
                 Constant.RABBITMQ.ROUTING_OTP_MAIL
         );

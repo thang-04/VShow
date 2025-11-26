@@ -34,7 +34,7 @@ import static com.vticket.commonlibs.utils.CommonUtils.gson;
 @RequestMapping("/api/identity/auth")
 @RequiredArgsConstructor
 public class AuthController {
-
+    private static final String LOG_PREFIX = "[AuthController]";
     private final RegisterUseCase registerUseCase;
     private final LoginUseCase loginUseCase;
     private final OtpUseCase otpUseCase;
@@ -44,48 +44,51 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@Valid @RequestBody RegisterRequest request) {
+        String prefix = LOG_PREFIX + "|register";
         try {
-            log.info("Register request for username: {}", request.getUsername());
-            LoginResponse response = registerUseCase.execute(request);
+            log.info("{}|Register request for username: {}", prefix, request.getUsername());
+            String response = registerUseCase.executeSendOtp(request);
             if (response == null) {
-                // OTP sent, waiting for verification before inserting user
-                log.info("Register response is null");
-                return ResponseJson.of(ErrorCode.UNSUCCESS, "Register response is null");
+                log.info("{}|OTP send for user: {} failed ", prefix,request.getEmail());
+                return ResponseJson.of(ErrorCode.UNSUCCESS, "Send OTP failed or has already been sent");
             }
-                log.info("OTP sent for user registration: {}", request.getEmail());
-                return ResponseJson.success("OTP sent. Please verify to complete registration", null);
-//            log.info("User created successfully: {}", response);
-//            return ResponseJson.success("Create user successful", response);
+            // OTP sent, waiting for verification before inserting user
+            log.info("{}|OTP sent for user: {} registration success", prefix, request.getEmail());
+            return ResponseJson.success("OTP sent. Please verify to complete registration");
         } catch (Exception e) {
-            log.error("Registration failed: {}", e.getMessage(), e);
+            log.error("{}|Registration failed: {}", prefix, e.getMessage(), e);
             return ResponseJson.of(ErrorCode.INVALID_REGISTER, e.getMessage());
         }
     }
 
     @PostMapping("/login")
     public String login(@Valid @RequestBody LoginRequest request) {
+        String prefix = LOG_PREFIX + "|login";
         try {
-            log.info("Login request for username: {}", request.getUsername());
+            log.info("{}|Login request for username: {}", prefix, request.getUsername());
             LoginResponse response = loginUseCase.execute(request);
             if (response == null) {
-                log.error("Login Failed for username: {}", request.getUsername());
+                log.error("{}|Login Failed for username: {}", prefix, request.getUsername());
                 return ResponseJson.of(ErrorCode.UNAUTHENTICATED, "Login Failed for username: " + request.getUsername());
             }
             return ResponseJson.success("Login successful", response);
         } catch (Exception e) {
-            log.error("Login failed: {}", e.getMessage(), e);
+            log.error("{}|Login failed: {}", prefix, e.getMessage(), e);
             return ResponseJson.of(ErrorCode.UNAUTHENTICATED, e.getMessage());
         }
     }
 
     @PostMapping("/refresh")
     public String refresh(@Valid @RequestBody RefreshTokenRequest request) {
+        String prefix = LOG_PREFIX + "|refresh";
+        log.info("{}|Refresh token request", prefix);
         try {
-            log.info("Refresh token request");
             TokenResponse response = refreshTokenUseCase.execute(request);
             if (response == null) {
+                log.info("{}|Refresh token failed", prefix);
                 return ResponseJson.of(ErrorCode.EXPIRED_TOKEN, "Refresh token expired");
             }
+            log.info("{}|Refresh token successful", prefix);
             return ResponseJson.success("Token refreshed successfully", response);
         } catch (Exception e) {
             log.error("Token refresh failed: {}", e.getMessage(), e);
@@ -95,35 +98,38 @@ public class AuthController {
 
     @PostMapping("/verify-otp")
     public String verifyOtp(@RequestBody OtpVerifyRequest request) {
-        String prefix = "[AuthController]|verifyOtp|";
-        log.info("{}|OTP verification request for email: {}", prefix, gson.toJson(request));
+        String prefix = LOG_PREFIX + "|verifyOtp";
+        log.info("{}|OTP verification request for email: {}", prefix, request.getEmail());
         try {
-            boolean isVerify = otpUseCase.verifyOtp(request);
-            if (!isVerify) {
+            LoginResponse response = registerUseCase.executeInsert(request);
+            if (response == null) {
+                log.info("{}|OTP verification failed for email: {}", prefix, request.getEmail());
                 return ResponseJson.of(ErrorCode.INVALID_OTP, "Invalid OTP");
             }
+            log.info("{}|OTP verification successful for email: {}", prefix, request.getEmail());
+            return ResponseJson.success("OTP verified successfully, register user success", response);
         } catch (Exception e) {
             log.error("OTP verification failed: {}", e.getMessage(), e);
             return ResponseJson.of(ErrorCode.INVALID_OTP, e.getMessage());
         }
-        return ResponseJson.success("OTP verified successfully", null);
     }
 
     @PostMapping("/resend-otp")
     public String resendOtp(@RequestBody OtpVerifyRequest request) {
-        String prefix = "[AuthController]|resendOtp|";
+        String prefix = LOG_PREFIX + "|resendOtp";
+        log.info("{}|OTP resend for email: {}", prefix, request.getEmail());
         try {
-            boolean isResend = otpUseCase.resendRegistrationOtp(request.getPhone());
+            boolean isResend = otpUseCase.resendRegistrationOtp(request);
             if (!isResend) {
-                return ResponseJson.of(ErrorCode.INVALID_REQUEST, "Failed to resend OTP");
+                log.info("{}|OTP resend failed for email: {}", prefix, request.getEmail());
+                return ResponseJson.of(ErrorCode.UNSUCCESS, "Failed to resend OTP");
             }
+            log.info("{}|Resend OTP request for email: {}", prefix, gson.toJson(request));
+            return ResponseJson.success("OTP resent successfully", null);
         } catch (Exception e) {
             log.error("Resend OTP failed: {}", e.getMessage(), e);
             return ResponseJson.of(ErrorCode.INVALID_REQUEST, e.getMessage());
         }
-        log.info("{}|Resend OTP request for email: {}", prefix, gson.toJson(request));
-        return ResponseJson.success("OTP resent successfully", null);
-
     }
 
     //check keys public valid

@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OtpVerifyRequest {
-    private String phone;
+    private String email;
     private String otp;
 }

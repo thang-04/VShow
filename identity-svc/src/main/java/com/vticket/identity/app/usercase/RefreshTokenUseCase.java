@@ -16,8 +16,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
-import static com.vticket.commonlibs.utils.CommonUtils.gson;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
