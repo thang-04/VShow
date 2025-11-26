@@ -69,11 +69,12 @@ security:
     jwks-url: http://localhost:8081/api/identity/auth/jwks
     issuer: vticket-identity
     public_api:
-      - GET:/api/events/**
       - POST:/api/identity/auth/login
       - POST:/api/identity/auth/register
+      - POST:/api/identity/auth/refresh
       - GET:/api/identity/auth/jwks
       - POST:/api/identity/token/introspect
+      - GET:/api/events/**
     protected_api:
       - POST:/api/events/category/**:ADMIN
       - POST:/api/events/**:ADMIN

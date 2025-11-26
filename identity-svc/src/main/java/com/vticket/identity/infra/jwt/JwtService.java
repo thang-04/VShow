@@ -48,6 +48,7 @@ public class JwtService {
                 .header().add("kid", active.getKid()).and()
                 .issuer(keyRegistry.getIssuer())
                 .subject(user.getUsername())
+                .id(user.getId())
                 .claim("uuid", uuid)
                 .claim("email",user.getEmail())
                 .issuedAt(Date.from(now))

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatusCode;
 @Getter
 public enum ErrorCode {
     SUCCESS(1000, "Success", HttpStatus.OK),
+    UNSUCCESS(2000, "Unsuccess", HttpStatus.NOT_FOUND),
     ERROR_CODE_EXCEPTION(-9999, "Unknown error", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_KEY(1001, "Uncategorized error", HttpStatus.BAD_REQUEST),
     USER_EXISTED(1002, "User existed", HttpStatus.BAD_REQUEST),

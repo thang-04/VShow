@@ -26,6 +26,20 @@ public class Constant {
     }
 
     public static final class RABBITMQ {
+        // EXCHANGE DÙNG CHUNG
+        public static final String DIRECT_EXCHANGE = "email.direct.exchange";
+        public static final String TOPIC_EXCHANGE = "email.topic.exchange";
+        public static final String FANOUT_EXCHANGE = "email.fanout.exchange";
+        public static final String DLX_EXCHANGE = "email.dlx.exchange";// gom tất cả message fail
+        public static final String DLQ_QUEUE = "email.dlq.queue";
+
+        // DIRECT QUEUE
+        public static final String QUEUE_OTP_MAIL = "mail.otp.queue";
+        public static final String ROUTING_OTP_MAIL = "mail.otp.routing";
+
+        public static final String QUEUE_TICKET_MAIL = "mail.ticket.queue";
+        public static final String ROUTING_TICKET_MAIL = "mail.ticket.routing";
+
         // MAIL FIRST_LOGIN MODULE
         public static final String QUEUE_MAIL = "mail.queue";
         public static final String EXCHANGE_MAIL = "mail.exchange";
@@ -45,5 +59,13 @@ public class Constant {
         public static final String QUEUE_TICKET = "ticket.queue";
         public static final String EXCHANGE_TICKET = "ticket.exchange";
         public static final String ROUTING_TICKET = "ticket.routing";
+
+        // TOPIC QUEUE
+        public static final String QUEUE_TOPIC_USER = "mail.user.topic.queue";
+        public static final String QUEUE_TOPIC_ADMIN = "mail.admin.topic.queue";
+
+        // FANOUT QUEUE
+        public static final String QUEUE_FANOUT = "mail.broadcast.queue";
+
     }
 }

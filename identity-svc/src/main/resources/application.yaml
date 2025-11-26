@@ -26,6 +26,30 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/vshow_identity
 
+  # Email
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:ndthang1704@gmail.com}
+    password: ${MAIL_PASSWORD:dbaa oklv isuj tyje}
+    smtp:
+      auth: true
+      starttls:
+        enable: true
+      timeout: 5000
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+ # RabbitMQ
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 # Eureka Client
 eureka:
   client:

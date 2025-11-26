@@ -52,11 +52,11 @@
         <module>gateway</module>              <!-- API Gateway-->
         <module>identity-svc</module>         <!-- Service xác thực người dùng -->
         <module>event-catalog-svc</module>    <!-- Service quản lý sự kiện -->
-<!--        <module>seatmap-svc</module>-->    <!-- Quản lý sơ đồ chỗ ngồi -->
-<!--        <module>booking-svc</module>-->    <!-- Xử lý đặt vé -->
-<!--        <module>payment-svc</module>-->    <!-- Xử lý thanh toán -->
-<!--        <module>notify-svc</module>-->     <!-- Gửi thông báo -->
-<!--        <module>report-svc</module>-->     <!-- Báo cáo thống kê -->
+        <!--        <module>seatmap-svc</module>-->    <!-- Quản lý sơ đồ chỗ ngồi -->
+        <!--        <module>booking-svc</module>-->    <!-- Xử lý đặt vé -->
+        <!--        <module>payment-svc</module>-->    <!-- Xử lý thanh toán -->
+        <module>notify-svc</module>     <!--   Gửi thông báo -->
+        <!--        <module>report-svc</module>-->     <!-- Báo cáo thống kê -->
     </modules>
 
     <build>

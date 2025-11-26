@@ -3,11 +3,13 @@ package com.vticket.identity.web;
 import com.vticket.commonlibs.exception.ErrorCode;
 import com.vticket.commonlibs.utils.ResponseJson;
 import com.vticket.identity.app.dto.req.LoginRequest;
+import com.vticket.identity.app.dto.req.OtpVerifyRequest;
 import com.vticket.identity.app.dto.req.RefreshTokenRequest;
 import com.vticket.identity.app.dto.req.RegisterRequest;
 import com.vticket.identity.app.dto.res.LoginResponse;
 import com.vticket.identity.app.dto.res.TokenResponse;
 import com.vticket.identity.app.usercase.LoginUseCase;
+import com.vticket.identity.app.usercase.OtpUseCase;
 import com.vticket.identity.app.usercase.RefreshTokenUseCase;
 import com.vticket.identity.app.usercase.RegisterUseCase;
 import com.vticket.identity.infra.config.KeyRegistry;
@@ -15,6 +17,7 @@ import com.vticket.identity.infra.jwt.RSAService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
@@ -24,6 +27,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
+import static com.vticket.commonlibs.utils.CommonUtils.gson;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/identity/auth")
@@ -32,6 +37,7 @@ public class AuthController {
 
     private final RegisterUseCase registerUseCase;
     private final LoginUseCase loginUseCase;
+    private final OtpUseCase otpUseCase;
     private final RefreshTokenUseCase refreshTokenUseCase;
     private final KeyRegistry keyRegistry;
     private final RSAService rSAService;
@@ -41,7 +47,15 @@ public class AuthController {
         try {
             log.info("Register request for username: {}", request.getUsername());
             LoginResponse response = registerUseCase.execute(request);
-            return ResponseJson.success("Registration successful", response);
+            if (response == null) {
+                // OTP sent, waiting for verification before inserting user
+                log.info("Register response is null");
+                return ResponseJson.of(ErrorCode.UNSUCCESS, "Register response is null");
+            }
+                log.info("OTP sent for user registration: {}", request.getEmail());
+                return ResponseJson.success("OTP sent. Please verify to complete registration", null);
+//            log.info("User created successfully: {}", response);
+//            return ResponseJson.success("Create user successful", response);
         } catch (Exception e) {
             log.error("Registration failed: {}", e.getMessage(), e);
             return ResponseJson.of(ErrorCode.INVALID_REGISTER, e.getMessage());
@@ -53,6 +67,10 @@ public class AuthController {
         try {
             log.info("Login request for username: {}", request.getUsername());
             LoginResponse response = loginUseCase.execute(request);
+            if (response == null) {
+                log.error("Login Failed for username: {}", request.getUsername());
+                return ResponseJson.of(ErrorCode.UNAUTHENTICATED, "Login Failed for username: " + request.getUsername());
+            }
             return ResponseJson.success("Login successful", response);
         } catch (Exception e) {
             log.error("Login failed: {}", e.getMessage(), e);
@@ -65,6 +83,9 @@ public class AuthController {
         try {
             log.info("Refresh token request");
             TokenResponse response = refreshTokenUseCase.execute(request);
+            if (response == null) {
+                return ResponseJson.of(ErrorCode.EXPIRED_TOKEN, "Refresh token expired");
+            }
             return ResponseJson.success("Token refreshed successfully", response);
         } catch (Exception e) {
             log.error("Token refresh failed: {}", e.getMessage(), e);
@@ -72,6 +93,38 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/verify-otp")
+    public String verifyOtp(@RequestBody OtpVerifyRequest request) {
+        String prefix = "[AuthController]|verifyOtp|";
+        log.info("{}|OTP verification request for email: {}", prefix, gson.toJson(request));
+        try {
+            boolean isVerify = otpUseCase.verifyOtp(request);
+            if (!isVerify) {
+                return ResponseJson.of(ErrorCode.INVALID_OTP, "Invalid OTP");
+            }
+        } catch (Exception e) {
+            log.error("OTP verification failed: {}", e.getMessage(), e);
+            return ResponseJson.of(ErrorCode.INVALID_OTP, e.getMessage());
+        }
+        return ResponseJson.success("OTP verified successfully", null);
+    }
+
+    @PostMapping("/resend-otp")
+    public String resendOtp(@RequestBody OtpVerifyRequest request) {
+        String prefix = "[AuthController]|resendOtp|";
+        try {
+            boolean isResend = otpUseCase.resendRegistrationOtp(request.getPhone());
+            if (!isResend) {
+                return ResponseJson.of(ErrorCode.INVALID_REQUEST, "Failed to resend OTP");
+            }
+        } catch (Exception e) {
+            log.error("Resend OTP failed: {}", e.getMessage(), e);
+            return ResponseJson.of(ErrorCode.INVALID_REQUEST, e.getMessage());
+        }
+        log.info("{}|Resend OTP request for email: {}", prefix, gson.toJson(request));
+        return ResponseJson.success("OTP resent successfully", null);
+
+    }
 
     //check keys public valid
     @GetMapping("/jwks")
