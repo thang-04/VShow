@@ -10,6 +10,7 @@ public class Constant {
         public static final String OTP_EMAIL = "vt:otp:email:%s";
         public static final String PENDING_USER_EMAIL = "vt:pending:user:%s";
         public static final String REDIS_LIST_EVENT = "vt:list:event:";
+        public static final String REDIS_EVENT_BY_CATEGORY_ID = "vt:list:event:cate:%s";
         public static final String REDIS_EVENT_BY_ID = "vt:event:%s";
         public static final String SEAT_LOCK = "vt:seat:lock:";
         public static final String SEAT_HOLD = "vt:seat:hold:";
