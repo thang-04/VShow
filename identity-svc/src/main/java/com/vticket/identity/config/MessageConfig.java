@@ -11,8 +11,11 @@ public class MessageConfig {
     @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+        // chỉ định tên base cho file resources.
         source.setBasename("properties/i18n/messages"); // resources/properties/i18n/messages_vi.properties
+        // encoding UTF-8
         source.setDefaultEncoding("UTF-8");
+        // không dùng locale của hệ thống
         source.setFallbackToSystemLocale(false);
         return source;
     }

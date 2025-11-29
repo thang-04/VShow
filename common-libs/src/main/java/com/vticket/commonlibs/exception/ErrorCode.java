@@ -16,6 +16,7 @@ public enum ErrorCode {
     USER_NOT_EXISTED(1005, "User not existed", HttpStatus.NOT_FOUND),
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
+    ERROR_INTERNAL(5000, "Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
     INVALID_EMAIL(1009, "Email is not valid", HttpStatus.BAD_REQUEST),
     INVALID_REGISTER(1010, "Invalid register information", HttpStatus.BAD_REQUEST),

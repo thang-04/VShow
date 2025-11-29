@@ -14,6 +14,11 @@ public class MessageService {
         this.messageSource = messageSource;
     }
 
+    /**
+     * @param key  tên key trong file messages_vi.properties
+     * @param args tham số truyền vào chuỗi message
+     * Locale default đang set là "vi-VN"
+     */
     public String get(String key, Object... args) {
         return messageSource.getMessage(key, args, new Locale("vi", "VN"));
     }

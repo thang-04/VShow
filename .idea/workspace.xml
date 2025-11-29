@@ -5,30 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb5f6cae-dd73-42aa-a2d9-82bb02b0b6c7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/mapper/IdentityDtoMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/MessageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/MessageConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/mapper/UserEntityMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/redis/RedisConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/redis/RedisService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/dto/res/UserResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/ProfileUseCase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/infra/config/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/infra/redis/RedisConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/dto/req/OtpVerifyRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/dto/req/OtpVerifyRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/OtpUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/OtpUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/RefreshTokenUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/RefreshTokenUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/RegisterUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/RegisterUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/domain/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/domain/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/domain/port/EmailPublisherPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/domain/port/EmailPublisherPort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/exception/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/exception/ErrorCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/mapper/IdentityDtoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/mapper/IdentityDtoMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/MessageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/MessageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/MessageConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/MessageConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/domain/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/domain/repository/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/repository/impl/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/repository/impl/UserRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/messaging/EmailEventPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/messaging/EmailEventPublisher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/resources/properties/messages_vi.properties" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/resources/properties/i18n/messages_vi.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/resources/templates/email/otp-template.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notify-svc/src/main/java/com/vticket/notify/infra/mail/SmtpMailSenderAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/notify-svc/src/main/java/com/vticket/notify/infra/mail/SmtpMailSenderAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notify-svc/src/main/resources/templates/email/otp-template.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,8 +28,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -80,47 +69,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Maven.common-libs [clean].executor": "Run",
-    "Maven.eureka-server [clean].executor": "Run",
-    "Maven.event-catalog-svc [clean].executor": "Run",
-    "Maven.gateway [clean].executor": "Run",
-    "Maven.identity-svc [clean].executor": "Run",
-    "Maven.vshow-parent [clean].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.CommonLib.executor": "Run",
-    "Spring Boot.EurekaServerApplication.executor": "Run",
-    "Spring Boot.EventCatalogApplication.executor": "Run",
-    "Spring Boot.GatewayApplication.executor": "Run",
-    "Spring Boot.IdentityApplication.executor": "Run",
-    "Spring Boot.NotifySvcApplication (1).executor": "Run",
-    "Spring Boot.NotifySvcApplication.executor": "Run",
-    "com.intellij.ide.FileNotInSourceRootChecker.no.check": "true",
-    "git-widget-placeholder": "identify-svc",
-    "ignore.virus.scanning.warn.message": "true",
-    "jdk.selected.JAVA_MODULE": "21",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Inteliji-Project/VShow/identity-svc/src/main/java/com/vticket/identity/infra",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "reactor",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Maven.common-libs [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.eureka-server [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.event-catalog-svc [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gateway [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.identity-svc [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.vshow-parent [clean].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.CommonLib.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.EurekaServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.EventCatalogApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.GatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.IdentityApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.NotifySvcApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.NotifySvcApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.ide.FileNotInSourceRootChecker.no.check&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;identify-svc&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;21&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Inteliji-Project/VShow/identity-svc/src/main/java/com/vticket/identity/infra&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reactor&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -316,7 +305,8 @@
       <workItem from="1763693200091" duration="11290000" />
       <workItem from="1763946516580" duration="28318000" />
       <workItem from="1764033768700" duration="12621000" />
-      <workItem from="1764119276353" duration="17338000" />
+      <workItem from="1764119276353" duration="24699000" />
+      <workItem from="1764291932723" duration="7948000" />
     </task>
     <servers />
   </component>

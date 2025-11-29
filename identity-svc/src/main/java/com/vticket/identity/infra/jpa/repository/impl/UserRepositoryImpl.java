@@ -8,6 +8,7 @@ import com.vticket.identity.infra.jpa.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -28,6 +29,12 @@ public class UserRepositoryImpl implements UserRepository {
     public Optional<User> findById(String id) {
         return jpaRepository.findById(id)
                 .map(userEntityMapper::toDomain);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return jpaRepository.findAll().stream()
+                .map(userEntityMapper::toDomain).toList();
     }
 
     @Override

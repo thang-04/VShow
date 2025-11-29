@@ -68,8 +68,8 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
                 .flatMap(jwt -> {
                     //config info to service downstream
                     ServerHttpRequest modifiedReq = request.mutate()
-                            .header("X-USER-ID", jwt.getClaimAsString("sub"))
-                            .header("X-USERNAME", jwt.getClaimAsString("username"))
+                            .header("X-USER-ID", jwt.getClaimAsString("jti"))
+                            .header("X-USERNAME", jwt.getClaimAsString("sub"))
                             .build();
 
                     return chain.filter(exchange.mutate().request(modifiedReq).build());
