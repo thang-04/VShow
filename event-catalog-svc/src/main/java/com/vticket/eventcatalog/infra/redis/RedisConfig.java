@@ -1,4 +1,4 @@
-package com.vticket.eventcatalog.infra.config;
+package com.vticket.eventcatalog.infra.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

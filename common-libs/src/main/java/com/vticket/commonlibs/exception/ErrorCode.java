@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatusCode;
 @Getter
 public enum ErrorCode {
     SUCCESS(1000, "Success", HttpStatus.OK),
+    UNSUCCESS(2000, "Unsuccess", HttpStatus.NOT_FOUND),
     ERROR_CODE_EXCEPTION(-9999, "Unknown error", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_KEY(1001, "Uncategorized error", HttpStatus.BAD_REQUEST),
     USER_EXISTED(1002, "User existed", HttpStatus.BAD_REQUEST),
@@ -15,6 +16,7 @@ public enum ErrorCode {
     USER_NOT_EXISTED(1005, "User not existed", HttpStatus.NOT_FOUND),
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
+    ERROR_INTERNAL(5000, "Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
     INVALID_EMAIL(1009, "Email is not valid", HttpStatus.BAD_REQUEST),
     INVALID_REGISTER(1010, "Invalid register information", HttpStatus.BAD_REQUEST),
