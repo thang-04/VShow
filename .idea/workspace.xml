@@ -4,20 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cb5f6cae-dd73-42aa-a2d9-82bb02b0b6c7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/dto/res/UserResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/ProfileUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/UserController.java" afterDir="false" />
+    <list default="true" id="cb5f6cae-dd73-42aa-a2d9-82bb02b0b6c7" name="Changes" comment=" and response DTO">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/exception/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/exception/ErrorCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/filter/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/mapper/IdentityDtoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/mapper/IdentityDtoMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/MessageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/MessageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/MessageConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/MessageConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/domain/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/domain/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/repository/impl/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/repository/impl/UserRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/AuthController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,22 +145,6 @@
         </entry>
       </map>
     </option>
-    <option name="configurationStatuses">
-      <map>
-        <entry key="SpringBootApplicationConfigurationType">
-          <value>
-            <map>
-              <entry key="EurekaServerApplication" value="STOPPED" />
-              <entry key="EventCatalogApplication" value="STOPPED" />
-              <entry key="GatewayApplication" value="STOPPED" />
-              <entry key="IdentityApplication" value="STOPPED" />
-              <entry key="NotifySvcApplication" value="FAILED" />
-              <entry key="NotifySvcApplication (1)" value="STOPPED" />
-            </map>
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
   <component name="RunManager" selected="Spring Boot.EurekaServerApplication">
     <configuration name="CommonLib" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
@@ -276,8 +250,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.300" />
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.300" />
       </set>
     </attachedChunks>
   </component>
