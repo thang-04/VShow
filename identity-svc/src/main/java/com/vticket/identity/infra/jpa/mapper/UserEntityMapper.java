@@ -1,5 +1,6 @@
 package com.vticket.identity.infra.jpa.mapper;
 
+import com.vticket.identity.app.dto.req.UpdateProfileRequest;
 import com.vticket.identity.domain.entity.User;
 import com.vticket.identity.infra.jpa.UserEntity;
 import org.mapstruct.Mapper;

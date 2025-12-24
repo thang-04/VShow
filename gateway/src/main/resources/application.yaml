@@ -79,6 +79,7 @@ security:
       - POST:/api/events/category/**:ADMIN
       - POST:/api/events/**:ADMIN
       - DELETE:/api/events/**:ADMIN
+      - GET:/api/identity/profile
 
 # logging
 logging:

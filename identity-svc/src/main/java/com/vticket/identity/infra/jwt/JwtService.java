@@ -51,6 +51,7 @@ public class JwtService {
                 .id(user.getId())
                 .claim("uuid", uuid)
                 .claim("email",user.getEmail())
+                .claim("roles",user.getRoles())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiration))
                 .signWith(privateKey, Jwts.SIG.RS256)

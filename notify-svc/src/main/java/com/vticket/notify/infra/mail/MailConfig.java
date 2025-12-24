@@ -22,7 +22,6 @@ public class MailConfig {
 
     /**
      * @return JavaMailSender - đối tượng dùng để gửi mail qua SMTP.
-     * Các cấu hình quan trọng:
      * mail.smtp.auth: Bật xác thực SMTP
      * mail.smtp.starttls.enable: Bật mã hóa TLS
      * mail.smtp.timeout: Timeout khi gửi mail

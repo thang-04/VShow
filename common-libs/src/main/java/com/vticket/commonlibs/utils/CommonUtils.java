@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CommonUtils {
 
@@ -59,6 +61,38 @@ public class CommonUtils {
 
     public static boolean isNullOrEmpty(String str) {
         return (str == null || str.trim().isEmpty());
+    }
+
+    public static boolean isEmail(String email) {
+        try {
+            String regex = "^(.+)@(.+)$";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(email);
+            return matcher.matches();
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public static List<String> extractVietnamPhoneNumber(String text) {
+        List<String> phoneNumbers = new ArrayList<>();
+        String phoneRegex = "\\b(0|84|\\+84)(3|5|7|8|9)\\d{8}\\b";
+        Pattern pattern = Pattern.compile(phoneRegex);
+        Matcher matcher = pattern.matcher(text);
+
+        // Tìm kiếm tất cả các số điện thoại hợp lệ trong nội dung
+        while (matcher.find()) {
+            // Xóa các dấu gạch nối hoặc khoảng trắng
+            String phoneNumber = matcher.group().replaceAll("[-\\s]", "");
+            if (phoneNumber.startsWith("84")) {
+                phoneNumber = "0" + phoneNumber.substring(2);
+            } else if (phoneNumber.startsWith("+84")) {
+                phoneNumber = "0" + phoneNumber.substring(3);
+            }
+
+            phoneNumbers.add(phoneNumber);
+        }
+        return phoneNumbers;
     }
 
     /**
