@@ -68,13 +68,12 @@ public class LoginUseCase {
                         log.info("{}|Token expired for user: {}, refreshing token", prefix, request.getUsername());
                         String accessToken = jwtService.generateAccessToken(user);
                         String refreshToken = jwtService.generateRefreshToken(user);
-                        String refreshTokenHash = passwordEncoder.encode(refreshToken);
-                        user.updateTokens(accessToken, refreshTokenHash);
+                        user.updateTokens(accessToken, refreshToken);
                         userRepository.save(user);
 
                         TokenResponse tokens = TokenResponse.builder()
                                 .accessToken(accessToken)
-                                .refreshToken(refreshTokenHash)
+                                .refreshToken(refreshToken)
                                 .tokenType("Bearer")
                                 .expiresIn(ChronoUnit.SECONDS.between(Instant.now(),
                                         Instant.now().plus(60, ChronoUnit.MINUTES)))
@@ -91,13 +90,12 @@ public class LoginUseCase {
                     log.info("{}|No existing token for user: {}, creating new token", prefix, request.getUsername());
                     String accessToken = jwtService.generateAccessToken(user);
                     String refreshToken = jwtService.generateRefreshToken(user);
-                    String refreshTokenHash = passwordEncoder.encode(refreshToken);
-                    user.updateTokens(accessToken, refreshTokenHash);
+                    user.updateTokens(accessToken, refreshToken);
                     userRepository.save(user);
 
                     TokenResponse tokens = TokenResponse.builder()
                             .accessToken(accessToken)
-                            .refreshToken(refreshTokenHash)
+                            .refreshToken(refreshToken)
                             .tokenType("Bearer")
                             .expiresIn(ChronoUnit.SECONDS.between(Instant.now(),
                                     Instant.now().plus(60, ChronoUnit.MINUTES)))

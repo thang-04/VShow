@@ -45,8 +45,8 @@ public class RefreshTokenUseCase {
                 return null;
             } else {
                 User u = user.get();
-                if (!verifyRefreshToken(request.getRefreshToken(), u.getRefreshToken())) {
-                    log.error("{}|Invalid refresh token for userId={}", prefix, userId);
+                if (!u.getRefreshToken().equals(request.getRefreshToken())) {
+                    log.error("{}|refresh token invalid", prefix);
                     return null;
                 }
 
@@ -55,9 +55,8 @@ public class RefreshTokenUseCase {
                 //gen new token
                 String newAccessToken = jwtService.generateAccessToken(u);
                 String newRefreshToken = jwtService.generateRefreshToken(u);
-                String refreshTokenHash = passwordEncoder.encode(newRefreshToken);
 
-                u.updateTokens(newAccessToken, refreshTokenHash);
+                u.updateTokens(newAccessToken, newRefreshToken);
                 userRepository.save(u);
                 return TokenResponse.builder()
                         .accessToken(newAccessToken)
@@ -85,8 +84,5 @@ public class RefreshTokenUseCase {
         return claims;
     }
 
-    private boolean verifyRefreshToken(String rawToken, String hashedToken) {
-        return passwordEncoder.matches(rawToken, hashedToken);
-    }
 }
 

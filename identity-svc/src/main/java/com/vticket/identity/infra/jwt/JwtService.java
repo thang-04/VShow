@@ -4,7 +4,6 @@ import com.vticket.identity.domain.entity.User;
 import com.vticket.identity.infra.config.KeyRegistry;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +35,7 @@ public class JwtService {
     }
 
     public String generateRefreshToken(User user) {
-        return generateTokenRS256(user, (long) keyRegistry.getAccessTokenTtlSeconds() * 24 * 60, REFRESH_TOKEN);
+        return generateTokenRS256(user, keyRegistry.getAccessTokenTtlSeconds() * 24 * 60, REFRESH_TOKEN);
     }
 
     public String generateTokenRS256(User user, long expirationMinutes, String type) {
