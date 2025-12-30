@@ -3,13 +3,18 @@ package com.vticket.identity.web;
 import com.vticket.commonlibs.exception.ErrorCode;
 import com.vticket.commonlibs.utils.ResponseJson;
 import com.vticket.identity.app.dto.req.LoginRequest;
+import com.vticket.identity.app.dto.req.LogoutRequest;
 import com.vticket.identity.app.dto.req.OtpVerifyRequest;
+import com.vticket.identity.app.dto.req.PasswordResetConfirmRequest;
+import com.vticket.identity.app.dto.req.PasswordResetRequest;
 import com.vticket.identity.app.dto.req.RefreshTokenRequest;
 import com.vticket.identity.app.dto.req.RegisterRequest;
 import com.vticket.identity.app.dto.res.LoginResponse;
 import com.vticket.identity.app.dto.res.TokenResponse;
 import com.vticket.identity.app.usercase.LoginUseCase;
+import com.vticket.identity.app.usercase.LogoutUseCase;
 import com.vticket.identity.app.usercase.OtpUseCase;
+import com.vticket.identity.app.usercase.PasswordResetUseCase;
 import com.vticket.identity.app.usercase.RefreshTokenUseCase;
 import com.vticket.identity.app.usercase.RegisterUseCase;
 import com.vticket.identity.infra.config.KeyRegistry;
@@ -38,6 +43,8 @@ public class AuthController {
     private final LoginUseCase loginUseCase;
     private final OtpUseCase otpUseCase;
     private final RefreshTokenUseCase refreshTokenUseCase;
+    private final LogoutUseCase logoutUseCase;
+    private final PasswordResetUseCase passwordResetUseCase;
     private final KeyRegistry keyRegistry;
     private final RSAService rSAService;
 
@@ -151,6 +158,60 @@ public class AuthController {
             ));
         }
         return Map.of("keys", keys);
+    }
+
+    @PostMapping("/logout")
+    public String logout(@Valid @RequestBody LogoutRequest request) {
+        String prefix = LOG_PREFIX + "|logout";
+        log.info("{}|Logout request", prefix);
+        try {
+            boolean success = logoutUseCase.execute(request);
+            if (!success) {
+                log.error("{}|Logout failed", prefix);
+                return ResponseJson.of(ErrorCode.UNAUTHENTICATED, "Logout failed");
+            }
+            log.info("{}|Logout successful", prefix);
+            return ResponseJson.success("Logout successful");
+        } catch (Exception e) {
+            log.error("{}|Logout failed: {}", prefix, e.getMessage(), e);
+            return ResponseJson.of(ErrorCode.ERROR_INTERNAL, e.getMessage());
+        }
+    }
+
+    @PostMapping("/password-reset")
+    public String requestPasswordReset(@Valid @RequestBody PasswordResetRequest request) {
+        String prefix = LOG_PREFIX + "|passwordReset";
+        log.info("{}|Password reset request for email: {}", prefix, request.getEmail());
+        try {
+            boolean success = passwordResetUseCase.sendPasswordResetOtp(request);
+            if (!success) {
+                log.error("{}|Password reset OTP send failed for email: {}", prefix, request.getEmail());
+                return ResponseJson.of(ErrorCode.UNSUCCESS, "Failed to send password reset OTP");
+            }
+            log.info("{}|Password reset OTP sent successfully for email: {}", prefix, request.getEmail());
+            return ResponseJson.success("Password reset OTP sent successfully. Please check your email.");
+        } catch (Exception e) {
+            log.error("{}|Password reset request failed: {}", prefix, e.getMessage(), e);
+            return ResponseJson.of(ErrorCode.ERROR_INTERNAL, e.getMessage());
+        }
+    }
+
+    @PostMapping("/password-reset/confirm")
+    public String confirmPasswordReset(@Valid @RequestBody PasswordResetConfirmRequest request) {
+        String prefix = LOG_PREFIX + "|confirmPasswordReset";
+        log.info("{}|Password reset confirmation for email: {}", prefix, request.getEmail());
+        try {
+            boolean success = passwordResetUseCase.confirmPasswordReset(request);
+            if (!success) {
+                log.error("{}|Password reset confirmation failed for email: {}", prefix, request.getEmail());
+                return ResponseJson.of(ErrorCode.INVALID_OTP, "Invalid OTP or password reset failed");
+            }
+            log.info("{}|Password reset successful for email: {}", prefix, request.getEmail());
+            return ResponseJson.success("Password reset successful");
+        } catch (Exception e) {
+            log.error("{}|Password reset confirmation failed: {}", prefix, e.getMessage(), e);
+            return ResponseJson.of(ErrorCode.ERROR_INTERNAL, e.getMessage());
+        }
     }
 
     private static String base64Url(BigInteger bi) {

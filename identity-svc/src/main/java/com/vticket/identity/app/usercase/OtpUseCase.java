@@ -111,8 +111,8 @@ public class OtpUseCase {
     public boolean resendRegistrationOtp(OtpVerifyRequest request) {
         String prefix = "[resendRegistrationOtp]";
         long start = System.currentTimeMillis();
-        String localPart = request.getEmail().split("@")[0];
-        String key = String.format(Constant.RedisKey.OTP_EMAIL, localPart);
+        String emailKey = request.getEmail() == null ? null : request.getEmail().trim().toLowerCase();
+        String key = String.format(Constant.RedisKey.OTP_EMAIL, emailKey);
 
         try {
             String cachedOtp = redisService.getRedisStringTemplate().opsForValue().get(key);
@@ -136,6 +136,41 @@ public class OtpUseCase {
             return true;
         } catch (Exception e) {
             log.error("{}|Failed to re-send OTP to email {}: {}", prefix, request.getEmail(), e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean sendPasswordResetOtp(User user) {
+        String prefix = "[sendPasswordResetOtp]";
+        long start = System.currentTimeMillis();
+        String otp = generateOtp();
+        String emailKey = user.getEmail() == null ? null : user.getEmail().trim().toLowerCase();
+        String key = String.format(Constant.RedisKey.OTP_EMAIL, emailKey);
+
+        try {
+            String cachedOtp = redisService.getRedisStringTemplate().opsForValue().get(key);
+            if (!StringUtils.isEmpty(cachedOtp)) {
+                log.error("{}|OTP already exists for email: {}", prefix, user.getEmail());
+                return false;
+            }
+            //build Event
+            EmailEvent event = buildEmailOtpEvent(user.getEmail(), 
+                    messageService.get("email.otp.subject"), 
+                    messageService.get("email.template.otp"), 
+                    Map.of("otp", otp));
+            //publish event to RabbitMQ
+            emailEventPublisher.publishOtp(event);
+
+            log.info("{}|Password reset OTP event published for email {} in {} ms", prefix,
+                    user.getEmail(), System.currentTimeMillis() - start);
+            //cache redis
+            redisService.getRedisStringTemplate().opsForValue().set(key, otp);
+            redisService.getRedisStringTemplate().expire(key, 5L, TimeUnit.MINUTES); // 5 minutes
+            log.info("{}|Stored password reset OTP in Redis for user ID {} with time {} ms", prefix, 
+                    user.getId(), (System.currentTimeMillis() - start));
+            return true;
+        } catch (Exception e) {
+            log.error("{}|Failed to send password reset OTP to email {}: {}", prefix, user.getEmail(), e.getMessage());
             return false;
         }
     }

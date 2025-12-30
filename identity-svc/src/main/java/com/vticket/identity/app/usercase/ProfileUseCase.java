@@ -95,6 +95,10 @@ public class ProfileUseCase {
             log.error("{}|Error accessing Redis for user ID: {} - {}", prefix, id, e.getMessage(), e);
         }
         log.info("{}|Successfully|retrieved={}|user={}", prefix, dataFrom, id);
+        if (user.isEmpty()) {
+            log.error("{}|User not found with ID: {}", prefix, id);
+            return null;
+        }
         return user.get();
     }
 
@@ -128,6 +132,10 @@ public class ProfileUseCase {
             log.error("{}|Error accessing Redis for user ID: {} - {}", prefix, id, e.getMessage(), e);
         }
         log.info("{}|Successfully retrieved={} ", prefix, dataFrom);
+        if (user.isEmpty()) {
+            log.error("{}|User not found with ID: {}", prefix, id);
+            return null;
+        }
         return identityDtoMapper.toResponse(user.get());
     }
 
@@ -153,8 +161,9 @@ public class ProfileUseCase {
                 return null;
             }
             log.info("{}|SUCCESS_UPDATE|With time: {}ms", prefix, (System.currentTimeMillis() - start));
-            //refresh cache
-            redisService.getRedisStringTemplate().delete(keyRedis);
+            //refresh cache - set new cache instead of just deleting
+            redisService.getRedisStringTemplate.delete(keyRedis);
+            putUserInfoToRedis(result.get());
             return identityDtoMapper.toResponse(result.get());
         } catch (Exception e) {
             log.error("{}|Error accessing Redis for user ID: {} - {}", prefix, id, e.getMessage(), e);

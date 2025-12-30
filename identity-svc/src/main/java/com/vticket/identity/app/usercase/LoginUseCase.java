@@ -26,6 +26,7 @@ public class LoginUseCase {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final ProfileUseCase profileUseCase;
 
     public LoginResponse execute(LoginRequest request) {
         String prefix = "[LoginUseCase]|username=" + request.getUsername();
@@ -70,6 +71,8 @@ public class LoginUseCase {
                         String refreshToken = jwtService.generateRefreshToken(user);
                         user.updateTokens(accessToken, refreshToken);
                         userRepository.save(user);
+                        //update cache redis
+                        profileUseCase.putUserInfoToRedis(user);
 
                         TokenResponse tokens = TokenResponse.builder()
                                 .accessToken(accessToken)
@@ -92,6 +95,8 @@ public class LoginUseCase {
                     String refreshToken = jwtService.generateRefreshToken(user);
                     user.updateTokens(accessToken, refreshToken);
                     userRepository.save(user);
+                    //update cache redis
+                    profileUseCase.putUserInfoToRedis(user);
 
                     TokenResponse tokens = TokenResponse.builder()
                             .accessToken(accessToken)
@@ -124,9 +129,15 @@ public class LoginUseCase {
         try {
             user = jwtService.verifyFromAccessToken(token);
             if (user != null && user.getId() != null) {
-                user = userRepository.findById(user.getId()).get();
+                Optional<User> userOptional = userRepository.findById(user.getId());
+                if (userOptional.isEmpty()) {
+                    log.error("User not found with ID: {}", user.getId());
+                    return null;
+                }
+                user = userOptional.get();
                 if (!token.equals(user.getAccessToken())) {
                     log.error("Token mismatch for user ID: {}", user.getId());
+                    return null;
                 } else {
                     log.info("Successfully retrieved user from access token for user ID: {}", user.getId());
                     return user;

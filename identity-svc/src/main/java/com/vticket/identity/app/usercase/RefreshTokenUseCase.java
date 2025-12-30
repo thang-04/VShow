@@ -27,6 +27,7 @@ public class RefreshTokenUseCase {
     private final JwtService jwtService;
     private final RedisService redisService;
     private final PasswordEncoder passwordEncoder;
+    private final ProfileUseCase profileUseCase;
 
     public TokenResponse execute(RefreshTokenRequest request) {
         String prefix = "[RefreshTokenUseCase]";
@@ -50,14 +51,14 @@ public class RefreshTokenUseCase {
                     return null;
                 }
 
-                //need-update: cache redis
-
                 //gen new token
                 String newAccessToken = jwtService.generateAccessToken(u);
                 String newRefreshToken = jwtService.generateRefreshToken(u);
 
                 u.updateTokens(newAccessToken, newRefreshToken);
                 userRepository.save(u);
+                //update cache redis
+                profileUseCase.putUserInfoToRedis(u);
                 return TokenResponse.builder()
                         .accessToken(newAccessToken)
                         .refreshToken(newRefreshToken)
