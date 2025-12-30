@@ -19,7 +19,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-        format_sql: true
+#        format_sql: true
   
   # MongoDB
   data:
@@ -76,12 +76,16 @@ security:
     issuer: vticket-identity
     access-token-ttl-seconds: 3600
 
-    active-kid: k1
+    active-kid: k2
 
     keys:
       - kid: k1
         private-pem: classpath:properties/cert/k1-private.pem
         public-pem: classpath:properties/cert/k1-public.pem
+
+      - kid: k2
+        private-pem: classpath:properties/cert/k2-private.pem
+        public-pem: classpath:properties/cert/k2-public.pem
 
 # Logging
 logging:

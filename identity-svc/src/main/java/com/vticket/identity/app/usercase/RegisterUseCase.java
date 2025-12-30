@@ -1,8 +1,10 @@
 package com.vticket.identity.app.usercase;
 
 import com.google.gson.Gson;
+import com.vticket.commonlibs.utils.CommonUtils;
 import com.vticket.commonlibs.utils.Constant;
 import com.vticket.commonlibs.utils.ResponseJson;
+import io.micrometer.common.util.StringUtils;
 import com.vticket.identity.app.dto.req.OtpVerifyRequest;
 import com.vticket.identity.app.dto.req.RegisterRequest;
 import com.vticket.identity.app.dto.res.LoginResponse;
@@ -43,15 +45,31 @@ public class RegisterUseCase {
     private final OtpUseCase otpUseCase;
 
     public String executeSendOtp(RegisterRequest request) {
-        String prefix = "[LoginUseCase]|executeSendOtp|request=" + gson.toJson(request);
+        String prefix = "[RegisterUseCase]|executeSendOtp|request=" + gson.toJson(request);
         log.info(prefix);
         try {
-            if (userRepository.existsByUsername(request.getUsername())) {
-                log.error("{}|Username={} already existed", prefix, request.getUsername());
+            // Validate email format
+            if (StringUtils.isBlank(request.getEmail())) {
+                log.error("{}|Email is required", prefix);
                 return null;
             }
-            if (request.getEmail() != null && userRepository.existsByEmail(request.getEmail())) {
-                log.error("{}|Email={} already existed", prefix, request.getEmail());
+            if (!CommonUtils.isEmail(request.getEmail())) {
+                log.error("{}|Invalid email format: {}", prefix, request.getEmail());
+                return null;
+            }
+            // Validate username
+            if (StringUtils.isBlank(request.getUsername())) {
+                log.error("{}|Username is required", prefix);
+                return null;
+            }
+            // Check if username already exists
+            if (userRepository.existsByUsername(request.getUsername())) {
+                log.error("{}|Username already exists: {}", prefix, request.getUsername());
+                return null;
+            }
+            // Check if email already exists
+            if (userRepository.existsByEmail(request.getEmail())) {
+                log.error("{}|Email already exists: {}", prefix, request.getEmail());
                 return null;
             }
             User user = User.builder()
@@ -87,7 +105,7 @@ public class RegisterUseCase {
     }
 
     public LoginResponse executeInsert(OtpVerifyRequest request) {
-        String prefix = "[LoginUseCase]|executeInsert|request=" + gson.toJson(request);
+        String prefix = "[RegisterUseCase]|executeInsert|request=" + gson.toJson(request);
         String emailKey = request.getEmail() == null ? null : request.getEmail().trim().toLowerCase();
         try {
             String keyOtp = String.format(Constant.RedisKey.OTP_EMAIL, emailKey);

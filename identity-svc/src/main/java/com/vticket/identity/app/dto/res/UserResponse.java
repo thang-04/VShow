@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -17,12 +16,10 @@ public class UserResponse {
     private String id;
     private String username;
     private String email;
-    private String password;
+    private String avatar;
     private String deviceId;
+    private String phone;
+    private String address;
     private Set<Role> roles;
-    private String accessToken;
-    private String refreshToken;
-    private Date createdAt;
-    private Date updatedAt;
     private boolean active;
 }

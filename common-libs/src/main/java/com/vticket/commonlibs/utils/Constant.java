@@ -15,6 +15,7 @@ public class Constant {
         public static final String SEAT_LOCK = "vt:seat:lock:";
         public static final String SEAT_HOLD = "vt:seat:hold:";
         public static final String SEAT_STATUS = "vt:seat_status:event:";
+        public static final String BLACK_LIST_TOKEN = "vt:black:list:token:%s";
     }
 
     public static final class KAFKA {

@@ -47,9 +47,9 @@ spring:
 
 # Redis
 redis:
-  host: ${REDIS_HOST:localhost}
-  port: ${REDIS_PORT:6379}
-  timeout: ${REDIS_TIMEOUT:2000ms}
+  host: localhost
+  port: 6379
+  timeout: 2000ms
 
 # Eureka Client
 eureka:
@@ -68,15 +68,17 @@ security:
     issuer: ${JWT_ISSUER:vticket-identity}
 
     public_api:
-      - ${PUBLIC_API_1:GET:/api/events/**}
-      - ${PUBLIC_API_2:POST:/api/identity/auth/login}
-      - ${PUBLIC_API_3:POST:/api/identity/auth/register}
-      - ${PUBLIC_API_4:GET:/api/identity/auth/jwks}
-      - ${PUBLIC_API_5:POST:/api/identity/token/introspect}
-
+      - POST:/api/identity/auth/login
+      - POST:/api/identity/auth/register
+      - POST:/api/identity/auth/refresh
+      - GET:/api/identity/auth/jwks
+      - POST:/api/identity/token/introspect
+      - GET:/api/events/**
     protected_api:
-      - ${PROTECTED_API_1:POST:/api/events/**:ADMIN}
-      - ${PROTECTED_API_2:DELETE:/api/events/**:ADMIN}
+      - POST:/api/events/category/**:ADMIN
+      - POST:/api/events/**:ADMIN
+      - DELETE:/api/events/**:ADMIN
+      - GET:/api/identity/profile
 
 # Logging
 logging:

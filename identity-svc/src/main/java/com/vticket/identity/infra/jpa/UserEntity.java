@@ -34,6 +34,12 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
+    private String avatar;
+
+    private String phone;
+
+    private String address;
+
     private String deviceId;
 
     @ElementCollection(fetch = FetchType.EAGER)

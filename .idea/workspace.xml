@@ -4,10 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cb5f6cae-dd73-42aa-a2d9-82bb02b0b6c7" name="Changes" comment=" and response DTO">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="cb5f6cae-dd73-42aa-a2d9-82bb02b0b6c7" name="Changes" comment="feat: add configuration for email notifications and Redis caching">
+      <change afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/config/GatewayCorsConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gitlab-ci.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/exception/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/exception/ErrorCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/utils/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/utils/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/LoginUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/LoginUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/RefreshTokenUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/RefreshTokenUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/repository/impl/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/repository/impl/UserRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jwt/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jwt/JwtService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +32,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -89,12 +102,15 @@
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;21&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Inteliji-Project/VShow/identity-svc/src/main/java/com/vticket/identity/infra&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Inteliji-Project/VShow/identity-svc/src/main/resources/properties/cert&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reactor&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -105,8 +121,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Inteliji-Project\VShow\identity-svc\src\main\java\com\vticket\identity\infra" />
       <recent name="D:\Inteliji-Project\VShow\identity-svc\src\main\resources\properties\cert" />
+      <recent name="D:\Inteliji-Project\VShow\identity-svc\src\main\java\com\vticket\identity\infra" />
       <recent name="D:\Inteliji-Project\VShow\notify-svc\src\main\java\com\vticket\notify\config" />
       <recent name="D:\Inteliji-Project\VShow\notify-svc\src\main\resources\templates" />
       <recent name="D:\Inteliji-Project\VShow\notify-svc\src\main\java\com\vticket\notify\infra\mail" />
@@ -141,6 +157,21 @@
               <option value="CommonLib" />
               <option value="NotifySvcApplication" />
             </set>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="EurekaServerApplication" value="STOPPED" />
+              <entry key="EventCatalogApplication" value="STOPPED" />
+              <entry key="GatewayApplication" value="STOPPED" />
+              <entry key="IdentityApplication" value="STOPPED" />
+              <entry key="NotifySvcApplication (1)" value="STOPPED" />
+            </map>
           </value>
         </entry>
       </map>
@@ -250,8 +281,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.300" />
-        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.300" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
+        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
       </set>
     </attachedChunks>
   </component>
@@ -281,6 +312,8 @@
       <workItem from="1764033768700" duration="12621000" />
       <workItem from="1764119276353" duration="24699000" />
       <workItem from="1764291932723" duration="7948000" />
+      <workItem from="1766471299651" duration="29441000" />
+      <workItem from="1767074884820" duration="7218000" />
     </task>
     <servers />
   </component>
@@ -288,6 +321,21 @@
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="main" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">

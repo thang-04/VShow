@@ -7,9 +7,11 @@ import com.vticket.identity.app.dto.res.TokenResponse;
 import com.vticket.identity.domain.entity.User;
 import com.vticket.identity.domain.repository.UserRepository;
 import com.vticket.identity.infra.jwt.JwtService;
+import com.vticket.identity.infra.redis.RedisService;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -23,6 +25,9 @@ public class RefreshTokenUseCase {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final RedisService redisService;
+    private final PasswordEncoder passwordEncoder;
+    private final ProfileUseCase profileUseCase;
 
     public TokenResponse execute(RefreshTokenRequest request) {
         String prefix = "[RefreshTokenUseCase]";
@@ -31,10 +36,11 @@ public class RefreshTokenUseCase {
             if (!jwtService.validateToken(request.getRefreshToken())) {
                 throw new AppException(ErrorCode.INVALID_REFRESH_TOKEN);
             }
-            Claims claims = jwtService.parseTokenRS256(request.getRefreshToken());
+            Claims claims = validateAndParseClaims(request.getRefreshToken());
             String userId = claims.getId();
             log.info("{}|userId={}", prefix, userId);
             Optional<User> user = userRepository.findById(userId);
+
             if (user.isEmpty()) {
                 log.error("{}|userId={} not found", prefix, userId);
                 return null;
@@ -44,12 +50,15 @@ public class RefreshTokenUseCase {
                     log.error("{}|refresh token invalid", prefix);
                     return null;
                 }
-                //refresh new token
+
+                //gen new token
                 String newAccessToken = jwtService.generateAccessToken(u);
                 String newRefreshToken = jwtService.generateRefreshToken(u);
 
                 u.updateTokens(newAccessToken, newRefreshToken);
                 userRepository.save(u);
+                //update cache redis
+                profileUseCase.putUserInfoToRedis(u);
                 return TokenResponse.builder()
                         .accessToken(newAccessToken)
                         .refreshToken(newRefreshToken)
@@ -63,5 +72,18 @@ public class RefreshTokenUseCase {
         }
         return null;
     }
+
+    private Claims validateAndParseClaims(String token) {
+        if (!jwtService.validateToken(token)) {
+            throw new AppException(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+        Claims claims = jwtService.parseTokenRS256(token);
+        String tokenType = claims.get("type", String.class);
+        if (!"refresh".equals(tokenType)) {
+            throw new AppException(ErrorCode.INVALID_TOKEN_TYPE);
+        }
+        return claims;
+    }
+
 }
 

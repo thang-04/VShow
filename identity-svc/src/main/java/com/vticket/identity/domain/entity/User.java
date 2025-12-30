@@ -16,6 +16,9 @@ public class User {
     private String email;
     private String password;
     private String deviceId;
+    private String avatar;
+    private String phone;
+    private String address;
     private Set<Role> roles;
     private String accessToken;
     private String refreshToken;
