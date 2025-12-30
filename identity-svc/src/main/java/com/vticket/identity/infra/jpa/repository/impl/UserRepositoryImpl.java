@@ -37,10 +37,10 @@ public class UserRepositoryImpl implements UserRepository {
         log.info("{}|req={}", prefix, gson.toJson(user));
         int result = jpaRepository.updateProfile(uid, user.getAvatar(), user.getEmail(), user.getAddress());
         if (result == 0) {
-            log.error("{}|Update profile failed", prefix);
+            log.error("{}|Update profile failed|No rows affected", prefix);
             return Optional.empty();
         }
-        log.info("{}|updateProfile success", prefix);
+        log.info("{}|Update profile success|Rows affected={}", prefix, result);
         return findById(uid);
     }
 
@@ -51,8 +51,9 @@ public class UserRepositoryImpl implements UserRepository {
                 .map(userEntityMapper::toDomain);
         if (user.isEmpty()) {
             log.error("{}|FAILED|No data found", prefix);
+        } else {
+            log.info("{}|SUCCESS|Find by user_id={}", prefix, id);
         }
-        log.info("{}|SUCCESS|Find by user_id={}", prefix, id);
         return user;
     }
 
@@ -64,20 +65,41 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return jpaRepository.findByUsername(username)
+        String prefix = "[findByUsername]|username=" + username;
+        Optional<User> user = jpaRepository.findByUsername(username)
                 .map(userEntityMapper::toDomain);
+        if (user.isEmpty()) {
+            log.error("{}|FAILED|No data found", prefix);
+        } else {
+            log.info("{}|SUCCESS|User found", prefix);
+        }
+        return user;
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return jpaRepository.findByEmail(email)
+        String prefix = "[findByEmail]|email=" + email;
+        Optional<User> user = jpaRepository.findByEmail(email)
                 .map(userEntityMapper::toDomain);
+        if (user.isEmpty()) {
+            log.error("{}|FAILED|No data found", prefix);
+        } else {
+            log.info("{}|SUCCESS|User found", prefix);
+        }
+        return user;
     }
 
     @Override
     public Optional<User> findByDeviceId(String deviceId) {
-        return jpaRepository.findByDeviceId(deviceId)
+        String prefix = "[findByDeviceId]|device_id=" + deviceId;
+        Optional<User> user = jpaRepository.findByDeviceId(deviceId)
                 .map(userEntityMapper::toDomain);
+        if (user.isEmpty()) {
+            log.error("{}|FAILED|No data found", prefix);
+        } else {
+            log.info("{}|SUCCESS|User found", prefix);
+        }
+        return user;
     }
 
     @Override
@@ -92,7 +114,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void deleteById(String id) {
+        String prefix = "[deleteById]|user_id=" + id;
+        log.info("{}|Deleting user", prefix);
         jpaRepository.deleteById(id);
+        log.info("{}|User deleted successfully", prefix);
     }
 
 }
