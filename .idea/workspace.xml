@@ -5,24 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb5f6cae-dd73-42aa-a2d9-82bb02b0b6c7" name="Changes" comment="feat: add configuration for email notifications and Redis caching">
-      <change afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/dto/req/UpdateProfileRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway/src/main/java/com/vticket/gateway/config/GatewayCorsConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gitlab-ci.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/exception/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/exception/ErrorCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/utils/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/utils/CommonUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/dto/res/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/dto/res/UserResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/ProfileUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/ProfileUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/domain/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/domain/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/domain/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/domain/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/UserEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/UserEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/mapper/UserEntityMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/mapper/UserEntityMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/repository/UserJpaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/repository/UserJpaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/utils/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-libs/src/main/java/com/vticket/commonlibs/utils/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-catalog-svc/src/main/java/com/vticket/eventcatalog/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/LoginUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/LoginUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/RefreshTokenUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/app/usercase/RefreshTokenUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/config/WebConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/repository/impl/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jpa/repository/impl/UserRepositoryImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jwt/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/infra/jwt/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/java/com/vticket/identity/web/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/identity-svc/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/identity-svc/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notify-svc/src/main/java/com/vticket/notify/infra/mail/MailConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/notify-svc/src/main/java/com/vticket/notify/infra/mail/MailConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,6 +108,9 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reactor&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -316,7 +312,8 @@
       <workItem from="1764033768700" duration="12621000" />
       <workItem from="1764119276353" duration="24699000" />
       <workItem from="1764291932723" duration="7948000" />
-      <workItem from="1766471299651" duration="15451000" />
+      <workItem from="1766471299651" duration="29441000" />
+      <workItem from="1767074884820" duration="7218000" />
     </task>
     <servers />
   </component>

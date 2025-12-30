@@ -28,11 +28,6 @@ public class UserRepositoryImpl implements UserRepository {
         log.info("Save user={}", gson.toJson(user));
         UserEntity entity = userEntityMapper.toEntity(user);
         UserEntity saved = jpaRepository.save(entity);
-        if (saved == null) {
-            log.error("Save user failed");
-            return null;
-        }
-        log.info("Save success user={}", gson.toJson(saved));
         return userEntityMapper.toDomain(saved);
     }
 
