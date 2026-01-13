@@ -35,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
     public Optional<User> updateProfile(String uid, UpdateProfileRequest user) {
         String prefix = "[updateProfile]|user_id=" + uid;
         log.info("{}|req={}", prefix, gson.toJson(user));
-        int result = jpaRepository.updateProfile(uid, user.getAvatar(), user.getEmail(), user.getAddress());
+        int result = jpaRepository.updateProfile(uid, user.getAvatar(), user.getEmail(), user.getAddress(), user.getPhone());
         if (result == 0) {
             log.error("{}|Update profile failed|No rows affected", prefix);
             return Optional.empty();

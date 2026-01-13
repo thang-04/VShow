@@ -48,7 +48,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/thang-04/VShow.git&quot;,
-    &quot;accountId&quot;: &quot;2d39dbb7-5fdf-4849-929b-1007c0c924a7&quot;
+    &quot;accountId&quot;: &quot;66f22fab-0d70-4734-abb5-a6514aa098e2&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -98,9 +98,11 @@
     &quot;Spring Boot.NotifySvcApplication (1).executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.NotifySvcApplication.executor&quot;: &quot;Run&quot;,
     &quot;com.intellij.ide.FileNotInSourceRootChecker.no.check&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;identify-svc&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;21&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/Inteliji-Project/VShow/identity-svc/src/main/resources/properties/cert&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -113,6 +115,7 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reactor&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -166,6 +169,7 @@
         <entry key="SpringBootApplicationConfigurationType">
           <value>
             <map>
+              <entry key="CommonLib" value="FAILED" />
               <entry key="EurekaServerApplication" value="STOPPED" />
               <entry key="EventCatalogApplication" value="STOPPED" />
               <entry key="GatewayApplication" value="STOPPED" />
@@ -281,8 +285,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
+        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28238.7" />
       </set>
     </attachedChunks>
   </component>
@@ -314,6 +318,13 @@
       <workItem from="1764291932723" duration="7948000" />
       <workItem from="1766471299651" duration="29441000" />
       <workItem from="1767074884820" duration="7218000" />
+      <workItem from="1767329953938" duration="5741000" />
+      <workItem from="1767421996525" duration="10117000" />
+      <workItem from="1767536800260" duration="2332000" />
+      <workItem from="1767593520841" duration="4181000" />
+      <workItem from="1767718089372" duration="15415000" />
+      <workItem from="1767968347432" duration="4279000" />
+      <workItem from="1768198049333" duration="7310000" />
     </task>
     <servers />
   </component>
@@ -349,5 +360,13 @@
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>

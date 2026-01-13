@@ -94,7 +94,7 @@ public class RegisterUseCase {
                 String emailKey = user.getEmail() == null ? null : user.getEmail().trim().toLowerCase();
                 String pendingKey = String.format(Constant.RedisKey.PENDING_USER_EMAIL, emailKey);
                 redisService.getRedisStringTemplate().opsForValue().set(pendingKey, gson.toJson(user));
-                redisService.getRedisStringTemplate().expire(pendingKey, 10L, TimeUnit.MINUTES);//10p
+                redisService.getRedisStringTemplate().expire(pendingKey, 20L, TimeUnit.MINUTES);//10p
                 log.info("Stored pending user for email {}. Waiting for OTP verification.", user.getEmail());
                 return ResponseJson.success("Send otp verification successfully");
             }
@@ -113,20 +113,11 @@ public class RegisterUseCase {
             if (cachedOtp != null) {
                 User savedUser = otpUseCase.verifyOtp(request);
                 if (savedUser != null) {
+                    redisService.getRedisStringTemplate().delete(Constant.RedisKey.ALL_USERS);
                     log.info("{}|Register successfully|User={}", prefix, savedUser);
-                    TokenResponse tokens = TokenResponse.builder()
-                            .accessToken(savedUser.getAccessToken())
-                            .refreshToken(savedUser.getRefreshToken())
-                            .tokenType("Bearer")
-                            .expiresIn(ChronoUnit.SECONDS.between(Instant.now(),
-                                    Instant.now().plus(60, ChronoUnit.MINUTES)))
-                            .build();
-
                     return LoginResponse.builder()
-                            .userId(savedUser.getId())
                             .username(savedUser.getUsername())
                             .email(savedUser.getEmail())
-                            .tokens(tokens)
                             .build();
                 }
             }

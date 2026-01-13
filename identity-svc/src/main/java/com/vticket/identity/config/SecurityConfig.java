@@ -34,9 +34,7 @@ public class SecurityConfig {
                         // public
                         .requestMatchers("/api/identity/auth/**").permitAll()
                         .requestMatchers("/api/identity/token/**").permitAll()
-                        .requestMatchers("/api/identity/auth/jwks").permitAll()
                         .requestMatchers("/api/identity/profile").permitAll()
-                        .requestMatchers("/api/identity/update-profile").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
