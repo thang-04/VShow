@@ -120,6 +120,7 @@ public class PasswordResetUseCase {
             // Clear user cache to force refresh
             String userCacheKey = Constant.RedisKey.USER_ID + user.getId();
             redisService.getRedisStringTemplate().delete(userCacheKey);
+            redisService.getRedisStringTemplate().delete(Constant.RedisKey.ALL_USERS);
 
             log.info("{}|Password reset successful for email: {}", prefix, request.getEmail());
             return true;

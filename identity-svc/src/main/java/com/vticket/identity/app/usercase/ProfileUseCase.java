@@ -13,7 +13,6 @@ import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,12 +55,37 @@ public class ProfileUseCase {
             log.error("{}|Username is blank or null", prefix);
             return null;
         }
-        Optional<User> user = userRepository.findByUsername(username);
+
+        long start = System.currentTimeMillis();
+        String dataFrom = "BY REDIS";
+        String keyRedis = Constant.RedisKey.USER_USERNAME + username;
+        String resultRedis;
+        Optional<User> user = Optional.empty();
+
+        try {
+            resultRedis = redisService.getRedisStringTemplate().opsForValue().get(keyRedis);
+            if (!StringUtils.isBlank(resultRedis)) {
+                user = Optional.ofNullable(gson.fromJson(resultRedis, User.class));
+                log.info("{}|User found in Redis cache: {} with time: {}ms", prefix, user, (System.currentTimeMillis() - start));
+            } else {
+                user = userRepository.findByUsername(username);
+                dataFrom = "BY MYSQL";
+                log.info("{}|User retrieved from MYSQL: {} with time: {}ms", prefix, user, (System.currentTimeMillis() - start));
+                if (user.isEmpty()) {
+                    log.info("{}|User not found with username: {}", prefix, username);
+                } else {
+                    putUserInfoToRedis(user.get());
+                }
+            }
+        } catch (Exception e) {
+            log.error("{}|Error accessing Redis for username: {} - {}", prefix, username, e.getMessage(), e);
+        }
+
+        log.info("{}|Successfully|retrieved={}|user={}", prefix, dataFrom, username);
         if (user.isEmpty()) {
             log.error("{}|User not found with username: {}", prefix, username);
             return null;
         }
-        log.info("{}|Successfully retrieved user: {}", prefix, username);
         return user.get();
     }
 
@@ -162,7 +186,8 @@ public class ProfileUseCase {
             }
             log.info("{}|SUCCESS_UPDATE|With time: {}ms", prefix, (System.currentTimeMillis() - start));
             //refresh cache - set new cache instead of just deleting
-            redisService.getRedisStringTemplate.delete(keyRedis);
+            redisService.getRedisStringTemplate().delete(keyRedis);
+            redisService.getRedisStringTemplate().delete(Constant.RedisKey.USER_USERNAME + result.get().getUsername());
             putUserInfoToRedis(result.get());
             return identityDtoMapper.toResponse(result.get());
         } catch (Exception e) {

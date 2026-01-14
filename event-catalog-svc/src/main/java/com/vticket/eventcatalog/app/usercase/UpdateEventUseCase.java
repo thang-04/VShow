@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Slf4j
 @Service
@@ -45,7 +46,7 @@ public class UpdateEventUseCase {
         if (request.getEndTime() != null) event.setEndTime(request.getEndTime());
         if (request.getCategoryId() != null) event.setCategoryId(request.getCategoryId());
 
-        event.setUpdatedAt(LocalDateTime.now());
+        event.setUpdatedAt(new Date());
         Event updated = eventRepository.save(event);
         if(updated== null){
             log.error("{}|Failed to update event in MySQL for id {}.", prefix, eventId);

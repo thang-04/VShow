@@ -21,19 +21,21 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, String> {
     @Modifying
     @Transactional
     @Query("""
-        UPDATE UserEntity u
-        SET 
-            u.avatar = :avatar,
-            u.email = :email,
-            u.address = :address,
-            u.updatedAt = CURRENT_TIMESTAMP
-        WHERE u.id = :uid
-    """)
+                UPDATE UserEntity u
+                SET 
+                    u.avatar = :avatar,
+                    u.email = :email,
+                    u.address = :address,
+                    u.phone= :phone,
+                    u.updatedAt = CURRENT_TIMESTAMP
+                WHERE u.id = :uid
+            """)
     int updateProfile(
             @Param("uid") String uid,
             @Param("avatar") String avatar,
             @Param("email") String email,
-            @Param("address") String address
+            @Param("address") String address,
+            @Param("phone") String phone
     );
 }
 

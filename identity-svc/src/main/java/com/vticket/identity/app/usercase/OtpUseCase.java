@@ -47,7 +47,8 @@ public class OtpUseCase {
                 return false;
             }
             //build Event
-            EmailEvent event = buildEmailOtpEvent(user.getEmail(), messageService.get("email.otp.subject"), messageService.get("email.template.otp"), Map.of("otp", otp));
+            EmailEvent event = buildEmailOtpEvent(user.getEmail(), messageService.get("email.otp.subject"),
+                    messageService.get("email.template.otp"), Map.of("otp", otp));
             //publish event to RabbitMQ
             emailEventPublisher.publishOtp(event);
 
@@ -128,7 +129,8 @@ public class OtpUseCase {
             }
 
             //build Event
-            EmailEvent event = buildEmailOtpEvent(request.getEmail(), messageService.get("email.otp.subject"), messageService.get("email.template.otp"), Map.of("otp", otp));
+            EmailEvent event = buildEmailOtpEvent(request.getEmail(), messageService.get("email.otp.subject"),
+                    messageService.get("email.template.otp"), Map.of("otp", otp));
             //publish to rabbitmq
             emailEventPublisher.publishResendOtp(event);
             log.info("{}|Re-sent OTP to email {} with time {}ms", prefix,

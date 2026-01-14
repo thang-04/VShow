@@ -3,7 +3,6 @@ package com.vticket.identity.web;
 import com.vticket.commonlibs.exception.ErrorCode;
 import com.vticket.commonlibs.utils.ResponseJson;
 import com.vticket.identity.app.dto.req.LoginRequest;
-import com.vticket.identity.app.dto.req.LogoutRequest;
 import com.vticket.identity.app.dto.req.OtpVerifyRequest;
 import com.vticket.identity.app.dto.req.PasswordResetConfirmRequest;
 import com.vticket.identity.app.dto.req.PasswordResetRequest;
@@ -12,7 +11,6 @@ import com.vticket.identity.app.dto.req.RegisterRequest;
 import com.vticket.identity.app.dto.res.LoginResponse;
 import com.vticket.identity.app.dto.res.TokenResponse;
 import com.vticket.identity.app.usercase.LoginUseCase;
-import com.vticket.identity.app.usercase.LogoutUseCase;
 import com.vticket.identity.app.usercase.OtpUseCase;
 import com.vticket.identity.app.usercase.PasswordResetUseCase;
 import com.vticket.identity.app.usercase.RefreshTokenUseCase;
@@ -43,7 +41,6 @@ public class AuthController {
     private final LoginUseCase loginUseCase;
     private final OtpUseCase otpUseCase;
     private final RefreshTokenUseCase refreshTokenUseCase;
-    private final LogoutUseCase logoutUseCase;
     private final PasswordResetUseCase passwordResetUseCase;
     private final KeyRegistry keyRegistry;
     private final RSAService rSAService;
@@ -158,24 +155,6 @@ public class AuthController {
             ));
         }
         return Map.of("keys", keys);
-    }
-
-    @PostMapping("/logout")
-    public String logout(@Valid @RequestBody LogoutRequest request) {
-        String prefix = LOG_PREFIX + "|logout";
-        log.info("{}|Logout request", prefix);
-        try {
-            boolean success = logoutUseCase.execute(request);
-            if (!success) {
-                log.error("{}|Logout failed", prefix);
-                return ResponseJson.of(ErrorCode.UNAUTHENTICATED, "Logout failed");
-            }
-            log.info("{}|Logout successful", prefix);
-            return ResponseJson.success("Logout successful");
-        } catch (Exception e) {
-            log.error("{}|Logout failed: {}", prefix, e.getMessage(), e);
-            return ResponseJson.of(ErrorCode.ERROR_INTERNAL, e.getMessage());
-        }
     }
 
     @PostMapping("/password-reset")
