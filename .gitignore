@@ -35,3 +35,18 @@ build/
 # Ignore all PEM keys
 *.pem
 .env
+
+# IntelliJ
+.idea/
+*.iml
+
+# Build
+target/
+out/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
