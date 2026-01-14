@@ -4,9 +4,10 @@ import com.vticket.identity.domain.entity.User;
 import com.vticket.identity.infra.config.KeyRegistry;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -18,23 +19,26 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JwtService {
+    private static final String ACCESS_TOKEN = "access";
+    private static final String REFRESH_TOKEN = "refresh";
 
     private final JwtProperties jwtProperties;
     private final KeyRegistry keyRegistry;
     private final RSAService rsaService;
 
     public String generateAccessToken(User user) {
-        return generateTokenRS256(user, keyRegistry.getAccessTokenTtlSeconds());
+        return generateTokenRS256(user, keyRegistry.getAccessTokenTtlSeconds(), ACCESS_TOKEN);
     }
 
     public String generateRefreshToken(User user) {
-        return generateTokenRS256(user, (long) keyRegistry.getAccessTokenTtlSeconds() * 24 * 60);
+        return generateTokenRS256(user, keyRegistry.getAccessTokenTtlSeconds() * 24 * 60, REFRESH_TOKEN);
     }
 
-    public String generateTokenRS256(User user, long expirationMinutes) {
+    public String generateTokenRS256(User user, long expirationMinutes, String type) {
         //get active kid
         var active = keyRegistry.getKeys().stream()
                 .filter(k -> k.getKid().equals(keyRegistry.getActiveKid()))
@@ -48,8 +52,11 @@ public class JwtService {
                 .header().add("kid", active.getKid()).and()
                 .issuer(keyRegistry.getIssuer())
                 .subject(user.getUsername())
+                .id(user.getId())
                 .claim("uuid", uuid)
-                .claim("email",user.getEmail())
+                .claim("email", user.getEmail())
+                .claim("type", type)
+                .claim("roles", user.getRoles())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiration))
                 .signWith(privateKey, Jwts.SIG.RS256)
@@ -104,9 +111,26 @@ public class JwtService {
         }
     }
 
-    public String getUserIdFromToken(String token) {
-        Claims claims = parseTokenRS256(token);
-        return claims.getId();
+    public User verifyFromAccessToken(String token) {
+        String prefix = "[verifyFromAccessToken]|accessToken=" + token;
+        log.info("{}|START|Verify access token", prefix);
+        try {
+            if (StringUtils.isEmpty(token)) {
+                log.error("Empty token provided");
+               return null;
+            }
+            Claims claims = parseTokenRS256(token);
+            String subject = claims.getSubject();
+            String accessToken = (String) claims.get("accessToken");
+            String id = claims.getId();
+            return User.builder()
+                    .id(id)
+                    .username(subject)
+                    .accessToken(accessToken)
+                    .build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public String getUsernameFromToken(String token) {

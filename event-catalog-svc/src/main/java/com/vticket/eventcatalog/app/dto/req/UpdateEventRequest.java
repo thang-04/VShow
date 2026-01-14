@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 public class UpdateEventRequest {
@@ -15,8 +15,8 @@ public class UpdateEventRequest {
     private BigDecimal price;
     
     private String venue;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private Date startTime;
+    private Date endTime;
     private Long categoryId;
 }
 

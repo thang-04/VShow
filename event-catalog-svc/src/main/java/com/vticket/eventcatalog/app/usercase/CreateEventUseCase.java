@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Slf4j
 @Service
@@ -42,8 +43,8 @@ public class CreateEventUseCase {
                     .endTime(request.getEndTime())
                     .categoryId(request.getCategoryId())
                     .active(true)
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
+                    .createdAt(new Date())
+                    .updatedAt(new Date())
                     .build();
 
             Event saved = eventRepository.save(event);

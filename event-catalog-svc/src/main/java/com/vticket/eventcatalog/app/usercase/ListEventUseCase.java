@@ -32,32 +32,32 @@ public class ListEventUseCase {
         String prefix = "[ListEventUseCase]|";
         long start = System.currentTimeMillis();
         List<Event> listEvent = new ArrayList<>();
-        try{
+        try {
             String key = Constant.RedisKey.REDIS_LIST_EVENT;
             String resultRedis = redisService.getRedisEventTemplate().opsForValue().get(key);
             if (resultRedis == null || resultRedis.isEmpty()) {
-                // get by MYSQL
+                //get by MYSQL
                 List<Event> list = eventRepository.findActiveEvents();
-                log.info("Fetched events from MySQL: {} events found.", list.size());
+                log.info("{}|Fetched events from MySQL: {} events found.", prefix, list.size());
                 if (!list.isEmpty()) {
                     List<Event> mappedEvents = eventDtoMapper.toEntityList(list);
                     listEvent.addAll(mappedEvents);
-            }
-                // cache redis
+                }
+                //cache redis
                 if (!listEvent.isEmpty()) {
-                    redisService.getRedisEventTemplate().opsForValue().set(key,gson.toJson(listEvent));
+                    redisService.getRedisEventTemplate().opsForValue().set(key, gson.toJson(listEvent));
                     redisService.getRedisEventTemplate().expire(key, EVENT_TTL_HOURS, TimeUnit.HOURS);
-                    log.info("Stored events in Redis cache.");
+                    log.info("{}|Stored events in Redis cache.", prefix);
                 }
             } else {
                 listEvent = (List<Event>) gson.fromJson(resultRedis, new TypeToken<List<Event>>() {
                 }.getType());
-                log.info("Fetched events from Redis cache: {} events found.", listEvent.size());
+                log.info("{}|Fetched events from Redis cache: {} events found.", prefix, listEvent.size());
             }
-                log.info("getListSeat in Redis|Time taken: {} ms", (System.currentTimeMillis() - start) );
-                return eventDtoMapper.toResponseList(listEvent);
-        }catch (Exception ex) {
-            log.error("{}|Exception|{}",prefix, ex.getMessage(), ex);
+            log.info("{}|getListSeat in Redis|Time taken: {} ms", prefix, (System.currentTimeMillis() - start));
+            return eventDtoMapper.toResponseList(listEvent);
+        } catch (Exception ex) {
+            log.error("{}|Exception|{}", prefix, ex.getMessage(), ex);
             return List.of();
         }
     }
@@ -65,34 +65,34 @@ public class ListEventUseCase {
     public List<EventResponse> executeByCategory(Long categoryId) {
         String prefix = "[executeByCategoryID]|";
         long start = System.currentTimeMillis();
-        log.info("{}|Listing events for category ID: {} | Start time: {} ms",prefix, categoryId, start);
+        log.info("{}|Listing events for category ID: {} | Start time: {} ms", prefix, categoryId, start);
         List<Event> listEvents = new ArrayList<>();
-        try{
+        try {
             String key = String.format(Constant.RedisKey.REDIS_EVENT_BY_CATEGORY_ID, categoryId);
             String resultRedis = redisService.getRedisEventTemplate().opsForValue().get(key);
-            if(StringUtils.isEmpty(resultRedis)) {
-                // get by MYSQL
+            if (StringUtils.isEmpty(resultRedis)) {
+                //get by MYSQL
                 List<Event> list = eventRepository.findByCategoryId(categoryId);
-                log.info("{}|Fetched events from MySQL for category {}: {} events found.",prefix, categoryId, list.size());
-                if(!list.isEmpty()) {
+                log.info("{}|Fetched events from MySQL for category {}: {} events found.", prefix, categoryId, list.size());
+                if (!list.isEmpty()) {
                     List<Event> mappedEvents = eventDtoMapper.toEntityList(list);
                     listEvents.addAll(mappedEvents);
                 }
-                // cache redis
-                if(!listEvents.isEmpty()) {
+                //cache redis
+                if (!listEvents.isEmpty()) {
                     redisService.getRedisEventTemplate().opsForValue().set(key, gson.toJson(listEvents));
                     redisService.getRedisEventTemplate().expire(key, EVENT_TTL_HOURS, TimeUnit.HOURS);
-                    log.info("{}|Stored events in Redis cache for category ID: {}.",prefix, categoryId);
+                    log.info("{}|Stored events in Redis cache for category ID: {}.", prefix, categoryId);
                 }
             } else {
                 List<Event> cachedEvents = (List<Event>) gson.fromJson(resultRedis, new TypeToken<List<Event>>() {
                 }.getType());
-                log.info("{}|Fetched events from Redis cache for category {}: {} events found.",prefix, categoryId, cachedEvents.size());
+                log.info("{}|Fetched events from Redis cache for category {}: {} events found.", prefix, categoryId, cachedEvents.size());
             }
-            log.info("getListSeat in Redis by Category|Time taken: {} ms",prefix, (System.currentTimeMillis() - start) );
-                return eventDtoMapper.toResponseList(listEvents);
-        }catch (Exception ex) {
-            log.error("{}|Exception|{}",prefix, ex.getMessage(), ex);
+            log.info("{}|getListSeat in Redis by Category|Time taken: {} ms", prefix, (System.currentTimeMillis() - start));
+            return eventDtoMapper.toResponseList(listEvents);
+        } catch (Exception ex) {
+            log.error("{}|Exception|{}", prefix, ex.getMessage(), ex);
             return List.of();
         }
     }

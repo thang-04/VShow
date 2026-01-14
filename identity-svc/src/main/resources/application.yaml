@@ -19,12 +19,42 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-        format_sql: true
+#        format_sql: true
   
   # MongoDB
   data:
     mongodb:
       uri: mongodb://localhost:27017/vshow_identity
+
+  # Redis
+    redis:
+      host: localhost
+      port: 6379
+
+  # Email
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:ndthang1704@gmail.com}
+    password: ${MAIL_PASSWORD:dbaa oklv isuj tyje}
+    smtp:
+      auth: true
+      starttls:
+        enable: true
+      timeout: 5000
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  # RabbitMQ
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 # Eureka Client
 eureka:
@@ -46,12 +76,16 @@ security:
     issuer: vticket-identity
     access-token-ttl-seconds: 3600
 
-    active-kid: k1
+    active-kid: k2
 
     keys:
       - kid: k1
         private-pem: classpath:properties/cert/k1-private.pem
         public-pem: classpath:properties/cert/k1-public.pem
+
+      - kid: k2
+        private-pem: classpath:properties/cert/k2-private.pem
+        public-pem: classpath:properties/cert/k2-public.pem
 
 # Logging
 logging:
