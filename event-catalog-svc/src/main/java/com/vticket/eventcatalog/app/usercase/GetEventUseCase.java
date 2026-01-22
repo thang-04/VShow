@@ -25,7 +25,7 @@ public class GetEventUseCase {
     private final EventDtoMapper eventDtoMapper;
     private final RedisService redisService;
 
-    public EventResponse execute(Long eventId) {
+    public EventResponse getEventById(Long eventId) {
         String prefix = "[GetEventById]|";
         long start = System.currentTimeMillis();
         log.info("{}|Get event by id {}|Start|", prefix, eventId);
@@ -57,4 +57,3 @@ public class GetEventUseCase {
         }
     }
 }
-

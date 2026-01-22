@@ -29,7 +29,7 @@ public class ListCategoryUseCase {
     private final CategoryDtoMapper categoryDtoMapper;
     private final RedisService redisService;
 
-    public List<CategoryResponse> execute() {
+    public List<CategoryResponse> getAllCategories() {
         String prefix = "[ListCategoryUseCase]|";
         long start = System.currentTimeMillis();
         List<Category> listCategories = new ArrayList<>();
@@ -39,7 +39,7 @@ public class ListCategoryUseCase {
             if (StringUtils.isEmpty(resultRedis)) {
                 // get by MYSQL
                 List<Category> list = categoryRepository.findAll();
-                log.info("{}|Fetched categories from MySQL: {} categories found.",prefix, list.size());
+                log.info("{}|Fetched categories from MySQL: {} categories found.", prefix, list.size());
                 Category cate;
                 if (CollectionUtils.isNotEmpty(list)) {
                     for (Category category : list) {
@@ -59,12 +59,12 @@ public class ListCategoryUseCase {
             } else {
                 listCategories = (List<Category>) gson.fromJson(resultRedis, new TypeToken<List<Category>>() {
                 }.getType());
-                log.info("{}|Fetched categories from Redis cache: {} categories found.", prefix,listCategories.size());
+                log.info("{}|Fetched categories from Redis cache: {} categories found.", prefix, listCategories.size());
             }
-            log.info("{}|Time taken: {} ms",prefix, (System.currentTimeMillis() - start));
+            log.info("{}|Time taken: {} ms", prefix, (System.currentTimeMillis() - start));
             return categoryDtoMapper.toResponseList(listCategories);
         } catch (Exception ex) {
-            log.error("{}|Exception|{}",prefix, ex.getMessage(), ex);
+            log.error("{}|Exception|{}", prefix, ex.getMessage(), ex);
             return List.of();
         }
     }

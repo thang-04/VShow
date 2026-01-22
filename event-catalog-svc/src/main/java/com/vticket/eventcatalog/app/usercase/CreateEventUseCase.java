@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Slf4j
@@ -23,13 +22,13 @@ public class CreateEventUseCase {
     private final EventDtoMapper eventDtoMapper;
     private final RedisService redisService;
 
-    public EventResponse execute(CreateEventRequest request) {
+    public EventResponse createEvent(CreateEventRequest request) {
         String prefix = "[CreateEventUseCase]|";
         long start = System.currentTimeMillis();
-        try{
+        try {
             String key = Constant.RedisKey.REDIS_LIST_EVENT;
             String resultRedis = redisService.getRedisEventTemplate().opsForValue().get(key);
-            if(resultRedis != null){
+            if (resultRedis != null) {
                 // remove cache redis
                 redisService.getRedisEventTemplate().delete(key);
                 log.info("{}|Deleted event list cache in Redis.", prefix);
@@ -48,17 +47,16 @@ public class CreateEventUseCase {
                     .build();
 
             Event saved = eventRepository.save(event);
-            if(saved == null){
+            if (saved == null) {
                 log.error("{}|Failed to create event in MySQL.", prefix);
                 return null;
             }
             log.info("{}|Created event success. Time taken: {} ms", prefix, (System.currentTimeMillis() - start));
             return eventDtoMapper.toResponse(saved);
-        }catch (Exception ex){
-           log.error("{}|Exception|{}",prefix, ex.getMessage(), ex);
-           return null;
+        } catch (Exception ex) {
+            log.error("{}|Exception|{}", prefix, ex.getMessage(), ex);
+            return null;
         }
 
     }
 }
-

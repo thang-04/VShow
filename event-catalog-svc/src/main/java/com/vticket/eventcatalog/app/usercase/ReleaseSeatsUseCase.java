@@ -17,13 +17,13 @@ public class ReleaseSeatsUseCase {
 
     private final RedisService redisService;
 
-    public void execute(Long eventId, List<Long> seatIds) {
+    public void releaseSeats(Long eventId, List<Long> seatIds) {
         String prefix = "[ReleaseSeatsUseCase]|eventId=" + eventId + "|seatIds=" + seatIds;
 
         try {
             redisService.releaseSeats(eventId, seatIds);
 
-            //Update seat status back to AVAILABLE
+            // Update seat status back to AVAILABLE
             Map<String, String> availableUpdate = new HashMap<>();
             for (Long seatId : seatIds) {
                 availableUpdate.put(seatId.toString(), Seat.SeatStatus.AVAILABLE.name());

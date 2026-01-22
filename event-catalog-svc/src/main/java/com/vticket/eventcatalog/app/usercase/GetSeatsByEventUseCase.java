@@ -18,7 +18,7 @@ public class GetSeatsByEventUseCase {
     private final SeatRepository seatRepository;
     private final RedisService redisService;
 
-    public List<Seat> execute(Long eventId) {
+    public List<Seat> getSeatsByEventId(Long eventId) {
         long start = System.currentTimeMillis();
         String prefix = "[GetSeatsByEventUseCase]|eventId=" + eventId;
 
@@ -70,8 +70,10 @@ public class GetSeatsByEventUseCase {
                 }
             }
 
-//            log.info("{}|Success|fromRedis={}|holdCount={}|size={}|time={}ms", prefix, !seatStatusMap.isEmpty(),
-//                    (holdSeatIds != null ? holdSeatIds.size() : 0), seatList.size(), (System.currentTimeMillis() - start));
+            // log.info("{}|Success|fromRedis={}|holdCount={}|size={}|time={}ms", prefix,
+            // !seatStatusMap.isEmpty(),
+            // (holdSeatIds != null ? holdSeatIds.size() : 0), seatList.size(),
+            // (System.currentTimeMillis() - start));
             return seatList;
         } catch (Exception ex) {
             log.error("{}|Exception|{}", prefix, ex.getMessage(), ex);

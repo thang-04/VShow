@@ -36,7 +36,7 @@ public class SubmitTicketUseCase {
     private final SeatDtoMapper seatDtoMapper;
 
     @Transactional
-    public SubmitTicketResponse execute(SubmitTicketRequest request, String userId) {
+    public SubmitTicketResponse submitTicket(SubmitTicketRequest request, String userId) {
         String prefix = "[SubmitTicketUseCase]|eventId=" + request.getEventId();
         long start = System.currentTimeMillis();
         String bookingCode = UUID.randomUUID().toString();
@@ -45,7 +45,7 @@ public class SubmitTicketUseCase {
                     .map(ListItem::getSeatId)
                     .collect(Collectors.toList());
 
-            //Check if seats exist
+            // Check if seats exist
             List<Seat> seats = seatRepository.findByIds(requestSeatIds);
             List<Long> foundSeatIds = seats.stream()
                     .map(Seat::getId)
@@ -60,7 +60,7 @@ public class SubmitTicketUseCase {
 
             }
 
-            //Check seat availability
+            // Check seat availability
             for (Seat seat : seats) {
                 if (seat.getStatus() == Seat.SeatStatus.SOLD) {
                     log.error("{}|Some seats not available (SOLD)", prefix);
@@ -68,14 +68,14 @@ public class SubmitTicketUseCase {
                 }
             }
 
-            //Hold seats if not already held
+            // Hold seats if not already held
             List<Long> heldSeats = redisService.getHoldSeatIds(request.getEventId(), requestSeatIds);
             List<Long> seatsToHold = requestSeatIds.stream()
                     .filter(id -> !heldSeats.contains(id))
                     .collect(Collectors.toList());
 
             if (!seatsToHold.isEmpty()) {
-                boolean holdSuccess = holdSeatsUseCase.execute(request.getEventId(), seatsToHold);
+                boolean holdSuccess = holdSeatsUseCase.holdSeats(request.getEventId(), seatsToHold);
                 if (!holdSuccess) {
                     log.error("{}|Failed to hold seats", prefix);
                     return null;
@@ -87,20 +87,20 @@ public class SubmitTicketUseCase {
                 totalAmount += seat.getPrice();
             }
 
-            //Group seats by ticket type
+            // Group seats by ticket type
             Map<Long, List<Seat>> groupedSeats = seats.stream()
                     .collect(Collectors.groupingBy(Seat::getTicketTypeId));
 
-            //Build ticket items response
+            // Build ticket items response
             List<TicketItemResponse> ticketItems = new ArrayList<>();
             for (Map.Entry<Long, List<Seat>> entry : groupedSeats.entrySet()) {
                 List<Seat> seatList = entry.getValue();
                 Seat firstSeat = seatList.get(0);
-                
-                //Get ticket type info from seat
+
+                // Get ticket type info from seat
                 TicketType ticketType = firstSeat.getTicketType();
                 if (ticketType == null) {
-                    //Fallback: create minimal ticket type info
+                    // Fallback: create minimal ticket type info
                     ticketType = TicketType.builder()
                             .id(firstSeat.getTicketTypeId())
                             .ticket_name("Ticket Type " + firstSeat.getTicketTypeId())
@@ -133,7 +133,7 @@ public class SubmitTicketUseCase {
                 ticketItems.add(item);
             }
 
-            //Create booking
+            // Create booking
             Booking booking = Booking.builder()
                     .bookingCode(bookingCode)
                     .userId(userId)
@@ -143,7 +143,7 @@ public class SubmitTicketUseCase {
                             .collect(Collectors.joining(",")))
                     .subtotal(totalAmount)
                     .totalAmount(totalAmount)
-                    .paymentMethod(Booking.PaymentMethod.MOMO) //Default
+                    .paymentMethod(Booking.PaymentMethod.MOMO) // Default
                     .status(Booking.BookingStatus.PENDING)
                     .expiredAt(LocalDateTime.now().plusMinutes(BOOKING_TIME_MINUTES))
                     .build();
@@ -151,7 +151,7 @@ public class SubmitTicketUseCase {
             Booking savedBooking = bookingRepository.save(booking);
             log.info("{}|Inserted booking with ID: {} for booking code: {}", prefix, savedBooking.getId(), bookingCode);
 
-            //Update Redis seat status to SOLD
+            // Update Redis seat status to SOLD
             try {
                 Map<String, String> updateMap = new HashMap<>();
                 for (Long seatId : requestSeatIds) {
@@ -159,7 +159,7 @@ public class SubmitTicketUseCase {
                 }
                 redisService.updateSeatStatus(request.getEventId(), updateMap);
 
-                //Remove from seat-hold zset
+                // Remove from seat-hold zset
                 redisService.releaseSeats(request.getEventId(), requestSeatIds);
 
                 log.info("{}|Updated Redis Hash and cleaned ZSET for eventId, seats={}", prefix, requestSeatIds);
@@ -167,28 +167,29 @@ public class SubmitTicketUseCase {
                 log.error("{}|Redis update failed|error={}", prefix, e.getMessage());
             }
 
-            //Update seat status in DB
+            // Update seat status in DB
             for (Long seatId : requestSeatIds) {
                 seatRepository.updateStatus(seatId, Seat.SeatStatus.SOLD);
             }
 
-            //Build response
+            // Build response
             SubmitTicketResponse response = new SubmitTicketResponse();
             response.setEventId(request.getEventId());
             response.setBookingCode(bookingCode);
             response.setBookingId(savedBooking.getId());
             response.setDiscountCode("");
             response.setListItem(ticketItems);
-            response.setPaymentCode("MOMO"); //Default
+            response.setPaymentCode("MOMO"); // Default
             response.setSubtotal(totalAmount);
             response.setTotalAmount(totalAmount);
             response.setExpiredAt(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(BOOKING_TIME_MINUTES));
 
-            log.info("{}|Success|Booking code: {}|Time: {} ms", prefix, bookingCode, (System.currentTimeMillis() - start));
+            log.info("{}|Success|Booking code: {}|Time: {} ms", prefix, bookingCode,
+                    (System.currentTimeMillis() - start));
             return response;
         } catch (Exception ex) {
             log.error("{}|Exception|{}", prefix, ex.getMessage(), ex);
-           return null;
+            return null;
         }
     }
 }

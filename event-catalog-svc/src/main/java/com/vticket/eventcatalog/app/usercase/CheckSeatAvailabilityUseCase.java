@@ -20,10 +20,10 @@ public class CheckSeatAvailabilityUseCase {
     private final SeatRepository seatRepository;
     private final RedisService redisService;
 
-    public CheckSeatAvailabilityResult execute(Long eventId, List<Long> seatIds) {
+    public CheckSeatAvailabilityResult checkAvailability(Long eventId, List<Long> seatIds) {
         String prefix = "[CheckSeatAvailabilityUseCase]|eventId=" + eventId + "|seatIds=" + seatIds;
         try {
-            //Check if seats exist in DB
+            // Check if seats exist in DB
             List<Seat> seats = seatRepository.findByIds(seatIds);
             List<Long> foundSeatIds = seats.stream()
                     .map(Seat::getId)
@@ -40,7 +40,7 @@ public class CheckSeatAvailabilityUseCase {
                         .build();
             }
 
-            //Check if seats are held
+            // Check if seats are held
             List<Long> heldSeats = redisService.getHoldSeatIds(eventId, seatIds);
             if (!heldSeats.isEmpty()) {
                 log.error("{}|Some seats are currently held: {}", prefix, heldSeats);
@@ -50,7 +50,7 @@ public class CheckSeatAvailabilityUseCase {
                         .build();
             }
 
-            //Check if seats are available 
+            // Check if seats are available
             List<Long> soldSeats = seats.stream()
                     .filter(seat -> seat.getStatus() == Seat.SeatStatus.SOLD)
                     .map(Seat::getId)

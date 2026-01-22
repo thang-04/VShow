@@ -1,5 +1,6 @@
 package com.vticket.eventcatalog.app.usercase;
 
+import com.vticket.eventcatalog.domain.entity.Seat;
 import com.vticket.eventcatalog.infra.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ public class HoldSeatsUseCase {
     private final RedisService redisService;
     private static final long SEAT_HOLD_TTL_MINUTES = 3;
 
-    public boolean execute(Long eventId, List<Long> seatIds) {
+    public boolean holdSeats(Long eventId, List<Long> seatIds) {
         String prefix = "[HoldSeatsUseCase]|eventId=" + eventId + "|seatIds=" + seatIds;
         if (seatIds == null || seatIds.isEmpty()) {
             log.error("{}|Empty seat list", prefix);
@@ -25,10 +26,10 @@ public class HoldSeatsUseCase {
         List<Long> sortedSeatIds = new ArrayList<>(seatIds);
         Collections.sort(sortedSeatIds);
 
-        //Set order key redis for atomic ordering
+        // Set order key redis for atomic ordering
         Long order = redisService.incrementOrderKey(eventId, sortedSeatIds);
 
-        //Only first request
+        // Only first request
         if (order != null && order > 1) {
             log.error("{}|Rejected because another hold seat (order={})", prefix, order);
             redisService.deleteOrderKey(eventId, sortedSeatIds);
@@ -36,7 +37,7 @@ public class HoldSeatsUseCase {
         }
 
         try {
-            //Check if seats already held
+            // Check if seats already held
             List<Long> failedSeats = new ArrayList<>();
             for (Long seatId : sortedSeatIds) {
                 if (redisService.checkSeatHold(eventId, seatId)) {
@@ -50,13 +51,13 @@ public class HoldSeatsUseCase {
                 return false;
             }
 
-            //Hold all seats
+            // Hold all seats
             long now = System.currentTimeMillis();
             for (Long seatId : sortedSeatIds) {
                 boolean success = redisService.holdSeat(eventId, seatId, now);
                 if (!success) {
                     log.error("{}|Failed to hold seat {}", prefix, seatId);
-                    //Release already held seats
+                    // Release already held seats
                     for (Long heldSeatId : sortedSeatIds) {
                         if (!heldSeatId.equals(seatId)) {
                             redisService.releaseSeat(eventId, heldSeatId);
@@ -67,10 +68,10 @@ public class HoldSeatsUseCase {
                 }
             }
 
-            //Update seat status hash to HOLD
+            // Update seat status hash to HOLD
             Map<String, String> holdUpdate = new HashMap<>();
             for (Long seatId : sortedSeatIds) {
-                holdUpdate.put(seatId.toString(), com.vticket.eventcatalog.domain.entity.Seat.SeatStatus.HOLD.name());
+                holdUpdate.put(seatId.toString(), Seat.SeatStatus.HOLD.name());
             }
             redisService.updateSeatStatus(eventId, holdUpdate);
 
@@ -79,7 +80,7 @@ public class HoldSeatsUseCase {
 
         } catch (Exception e) {
             log.error("{}|Exception: {}", prefix, e.getMessage(), e);
-            //Release any held seats on error
+            // Release any held seats on error
             redisService.releaseSeats(eventId, sortedSeatIds);
             return false;
         } finally {

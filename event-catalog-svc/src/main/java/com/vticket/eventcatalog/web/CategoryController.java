@@ -30,7 +30,7 @@ public class CategoryController {
     public String findAllCategories() {
         String prefix = "[findAllCategories]";
         try {
-            List<CategoryResponse> listCategory = listCategoryUseCase.execute();
+            List<CategoryResponse> listCategory = listCategoryUseCase.getAllCategories();
             if (listCategory.isEmpty()) {
                 log.error("{}|ListCategory is empty", prefix);
                 return ResponseJson.of(ErrorCode.CATEGORY_NOT_FOUND, "List of Categories is empty");
@@ -49,7 +49,7 @@ public class CategoryController {
         String prefix = "[createCategory]";
         log.info("{}|Request: {}", prefix, gson.toJson(request));
         try {
-            CategoryResponse categoryResponse = createCategoryUseCase.execute(request);
+            CategoryResponse categoryResponse = createCategoryUseCase.createCategory(request);
             if (categoryResponse == null) {
                 log.error("{}|CategoryResponse is null", prefix);
                 return ResponseJson.of(ErrorCode.CATEGORY_NOT_FOUND, "CategoryResponse is null");
@@ -68,7 +68,7 @@ public class CategoryController {
         String prefix = "[updateCategory]";
         log.info("{}|Request: {}", prefix, gson.toJson(request));
         try {
-            CategoryResponse categoryResponse = updateCategoryUseCase.execute(id, request);
+            CategoryResponse categoryResponse = updateCategoryUseCase.updateCategory(id, request);
             if (categoryResponse == null) {
                 log.error("{}|CategoryResponse is null", prefix);
                 return ResponseJson.of(ErrorCode.CATEGORY_NOT_FOUND, "CategoryResponse is null");

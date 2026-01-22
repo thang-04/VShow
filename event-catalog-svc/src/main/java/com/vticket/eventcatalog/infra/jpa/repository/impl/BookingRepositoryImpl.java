@@ -22,36 +22,51 @@ public class BookingRepositoryImpl implements BookingRepository {
     @Override
     public Booking save(Booking booking) {
         String prefix = "[save]|booking_code=" + booking.getBookingCode();
-        log.info("{}|Saving booking", prefix);
-        BookingEntity saved = jpaRepository.save(bookingEntityMapper.toEntity(booking));
-        Booking result = bookingEntityMapper.toDomain(saved);
-        log.info("{}|Booking saved successfully|booking_id={}", prefix, result.getId());
-        return result;
+        try {
+            log.info("{}|Saving booking", prefix);
+            BookingEntity saved = jpaRepository.save(bookingEntityMapper.toEntity(booking));
+            Booking result = bookingEntityMapper.toDomain(saved);
+            log.info("{}|Booking saved successfully|booking_id={}", prefix, result.getId());
+            return result;
+        } catch (Exception e) {
+            log.error("{}|FAILED|Error saving booking: {}", prefix, e.getMessage(), e);
+            return null;
+        }
     }
 
     @Override
     public Optional<Booking> findByBookingCode(String bookingCode) {
         String prefix = "[findByBookingCode]|booking_code=" + bookingCode;
-        Optional<Booking> booking = jpaRepository.findByBookingCode(bookingCode)
-                .map(bookingEntityMapper::toDomain);
-        if (booking.isEmpty()) {
-            log.warn("{}|No booking found", prefix);
-        } else {
-            log.info("{}|Booking found", prefix);
+        try {
+            Optional<Booking> booking = jpaRepository.findByBookingCode(bookingCode)
+                    .map(bookingEntityMapper::toDomain);
+            if (booking.isEmpty()) {
+                log.warn("{}|No booking found", prefix);
+            } else {
+                log.info("{}|Booking found", prefix);
+            }
+            return booking;
+        } catch (Exception e) {
+            log.error("{}|FAILED|Error finding booking by code: {}", prefix, e.getMessage(), e);
+            return null;
         }
-        return booking;
     }
 
     @Override
     public Optional<Booking> findById(Long id) {
         String prefix = "[findById]|booking_id=" + id;
-        Optional<Booking> booking = jpaRepository.findById(id)
-                .map(bookingEntityMapper::toDomain);
-        if (booking.isEmpty()) {
-            log.warn("{}|No booking found", prefix);
-        } else {
-            log.info("{}|Booking found", prefix);
+        try {
+            Optional<Booking> booking = jpaRepository.findById(id)
+                    .map(bookingEntityMapper::toDomain);
+            if (booking.isEmpty()) {
+                log.warn("{}|No booking found", prefix);
+            } else {
+                log.info("{}|Booking found", prefix);
+            }
+            return booking;
+        } catch (Exception e) {
+            log.error("{}|FAILED|Error finding booking by id: {}", prefix, e.getMessage(), e);
+            return null;
         }
-        return booking;
     }
 }

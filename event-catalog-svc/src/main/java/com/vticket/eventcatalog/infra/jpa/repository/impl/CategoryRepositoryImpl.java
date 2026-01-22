@@ -23,35 +23,57 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     @Override
     public Category save(Category category) {
         String prefix = "[save]|category_id=" + (category.getId() != null ? category.getId() : "new");
-        log.info("{}|Saving category", prefix);
-        CategoryEntity saved = categoryJpaRepository.save(categoryEntityMapper.toEntity(category));
-        Category result = categoryEntityMapper.toDomain(saved);
-        log.info("{}|Category saved successfully|category_id={}", prefix, result.getId());
-        return result;
+        try {
+            log.info("{}|Saving category", prefix);
+            CategoryEntity saved = categoryJpaRepository.save(categoryEntityMapper.toEntity(category));
+            Category result = categoryEntityMapper.toDomain(saved);
+            log.info("{}|Category saved successfully|category_id={}", prefix, result.getId());
+            return result;
+        } catch (Exception e) {
+            log.error("{}|FAILED|Error saving category: {}", prefix, e.getMessage(), e);
+            return null;
+        }
     }
 
     @Override
     public Optional<Category> findById(Long id) {
         String prefix = "[findById]|category_id=" + id;
-        Optional<Category> category = categoryJpaRepository.findById(id).map(categoryEntityMapper::toDomain);
-        if (category.isEmpty()) {
-            log.error("{}|FAILED|No data found", prefix);
-        } else {
-            log.info("{}|SUCCESS|Category found", prefix);
+        try {
+            Optional<Category> category = categoryJpaRepository.findById(id).map(categoryEntityMapper::toDomain);
+            if (category.isEmpty()) {
+                log.error("{}|FAILED|No data found", prefix);
+            } else {
+                log.info("{}|SUCCESS|Category found", prefix);
+            }
+            return category;
+        } catch (Exception e) {
+            log.error("{}|FAILED|Error finding category: {}", prefix, e.getMessage(), e);
+            return Optional.empty();
         }
-        return category;
     }
 
     @Override
     public List<Category> findAll() {
-        return categoryEntityMapper.toDomainList(categoryJpaRepository.findAll());
+        String prefix = "[findAll]";
+        try {
+            List<Category> categories = categoryEntityMapper.toDomainList(categoryJpaRepository.findAll());
+            log.info("{}|Found {} categories", prefix, categories.size());
+            return categories;
+        } catch (Exception e) {
+            log.error("{}|FAILED|Error finding all categories: {}", prefix, e.getMessage(), e);
+            return null;
+        }
     }
 
     @Override
     public void deleteById(Long id) {
         String prefix = "[deleteById]|category_id=" + id;
-        log.info("{}|Deleting category", prefix);
-        categoryJpaRepository.deleteById(id);
-        log.info("{}|Category deleted successfully", prefix);
+        try {
+            log.info("{}|Deleting category", prefix);
+            categoryJpaRepository.deleteById(id);
+            log.info("{}|Category deleted successfully", prefix);
+        } catch (Exception e) {
+            log.error("{}|FAILED|Error deleting category: {}", prefix, e.getMessage(), e);
+        }
     }
 }

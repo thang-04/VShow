@@ -20,13 +20,13 @@ public class CreateCategoryUseCase {
     private final CategoryDtoMapper categoryDtoMapper;
     private final RedisService redisService;
 
-    public CategoryResponse execute(CreateCategoryRequest request) {
+    public CategoryResponse createCategory(CreateCategoryRequest request) {
         String prefix = "[CreateCategoryUseCase]|";
         long start = System.currentTimeMillis();
         try {
             String key = Constant.RedisKey.REDIS_LIST_CATEGORY;
             String resultRedis = redisService.getRedisEventTemplate().opsForValue().get(key);
-            if(resultRedis != null){
+            if (resultRedis != null) {
                 // remove cache redis
                 redisService.getRedisEventTemplate().delete(key);
                 log.info("{}|Deleted category list cache in Redis.", prefix);
