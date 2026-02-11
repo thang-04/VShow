@@ -71,12 +71,25 @@ public class EventController {
         }
     }
 
-    @GetMapping("/{id}")
-    public String getEvent(@PathVariable("id") Long id) {
-        String prefix = "[getEvent]";
-        log.info("{}|Request params - id: {}", prefix, id);
+    // @GetMapping("/{id}")
+    // public String getEvent(@PathVariable("id") Long id) {
+    // String prefix = "[getEvent]";
+    // log.info("{}|Request params - id: {}", prefix, id);
+    // try {
+    // EventResponse event = getEventUseCase.getEventById(id);
+    // return ResponseJson.success("Event details", event);
+    // } catch (Exception e) {
+    // log.error("{}|Exception: {}", prefix, e.getMessage(), e);
+    // return ResponseJson.of(ErrorCode.EVENT_NOT_FOUND, e.getMessage());
+    // }
+    // }
+
+    @GetMapping("/{slug}")
+    public String getEventBySlug(@PathVariable("slug") String slug) {
+        String prefix = "[getEventBySlug]";
+        log.info("{}|Request params - slug: {}", prefix, slug);
         try {
-            EventResponse event = getEventUseCase.getEventById(id);
+            EventResponse event = getEventUseCase.getEventBySlug(slug);
             return ResponseJson.success("Event details", event);
         } catch (Exception e) {
             log.error("{}|Exception: {}", prefix, e.getMessage(), e);

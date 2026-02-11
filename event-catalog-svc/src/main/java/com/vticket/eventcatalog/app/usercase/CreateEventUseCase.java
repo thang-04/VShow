@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.text.Normalizer;
 
 @Slf4j
 @Service
@@ -35,6 +36,7 @@ public class CreateEventUseCase {
             }
             Event event = Event.builder()
                     .title(request.getTitle())
+                    .slug(toSlug(request.getTitle()))
                     .description(request.getDescription())
                     .price(request.getPrice())
                     .venue(request.getVenue())
@@ -58,5 +60,14 @@ public class CreateEventUseCase {
             return null;
         }
 
+    }
+
+    private String toSlug(String input) {
+        if (input == null)
+            return "";
+        String nowhitespace = input.trim().replaceAll("\\s+", "-");
+        String normalized = Normalizer.normalize(nowhitespace, Normalizer.Form.NFD);
+        String slug = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        return slug.toLowerCase().replaceAll("[^a-z0-9-]", "").replaceAll("-+", "-");
     }
 }

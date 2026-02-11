@@ -56,4 +56,26 @@ public class GetEventUseCase {
             return null;
         }
     }
+
+    public EventResponse getEventBySlug(String slug) {
+        String prefix = "[GetEventBySlug]|";
+        long start = System.currentTimeMillis();
+        log.info("{}|Get event by slug {}|Start|", prefix, slug);
+        try {
+            Event event = eventRepository.findBySlug(slug)
+                    .orElseThrow(() -> new AppException(ErrorCode.EVENT_NOT_FOUND));
+            log.info("{}|Fetched event from MySQL for slug {}.", prefix, slug);
+
+            String key = String.format(Constant.RedisKey.REDIS_EVENT_BY_ID, event.getId());
+            redisService.getRedisEventTemplate().opsForValue().set(key, gson.toJson(event));
+            redisService.getRedisEventTemplate().expire(key, EVENT_TTL_HOURS, TimeUnit.HOURS);
+            log.info("{}|Stored event in Redis cache for id {}.", prefix, event.getId());
+
+            log.info("{}|Get event by slug {}|Time taken: {} ms", prefix, slug, (System.currentTimeMillis() - start));
+            return eventDtoMapper.toResponse(event);
+        } catch (Exception ex) {
+            log.error("{}|Exception|{}", prefix, ex.getMessage(), ex);
+            return null;
+        }
+    }
 }

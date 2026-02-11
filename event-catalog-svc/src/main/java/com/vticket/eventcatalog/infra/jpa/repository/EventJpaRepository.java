@@ -11,9 +11,12 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EventJpaRepository extends JpaRepository<EventEntity, Long> {
+    Optional<EventEntity> findBySlug(String slug);
+
     List<EventEntity> findByCategoryId(Long categoryId);
 
     List<EventEntity> findByActiveTrue();
@@ -25,8 +28,8 @@ public interface EventJpaRepository extends JpaRepository<EventEntity, Long> {
             "(:maxPrice IS NULL OR e.price <= :maxPrice) AND " +
             "e.active = true")
     List<EventEntity> searchEvents(@Param("categoryIds") List<Long> categoryIds,
-            @Param("location") String location,
-            @Param("minPrice") BigDecimal minPrice,
-            @Param("maxPrice") BigDecimal maxPrice,
-            Sort sort);
+                                   @Param("location") String location,
+                                   @Param("minPrice") BigDecimal minPrice,
+                                   @Param("maxPrice") BigDecimal maxPrice,
+                                   Sort sort);
 }

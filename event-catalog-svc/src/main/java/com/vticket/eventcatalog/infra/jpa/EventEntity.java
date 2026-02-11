@@ -27,6 +27,9 @@ public class EventEntity {
     @Column(nullable = false)
     private String title;
 
+    @Column(unique = true)
+    private String slug;
+
     @Column(length = 2000)
     private String description;
 
@@ -54,4 +57,3 @@ public class EventEntity {
     @Builder.Default
     private boolean active = true;
 }
-

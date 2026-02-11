@@ -40,6 +40,24 @@ public class EventRepositoryImpl implements EventRepository {
     }
 
     @Override
+    public Optional<Event> findBySlug(String slug) {
+        String prefix = "[findBySlug]|slug=" + slug;
+        try {
+            Optional<Event> event = jpaRepository.findBySlug(slug)
+                    .map(eventEntityMapper::toDomain);
+            if (event.isEmpty()) {
+                log.error("{}|FAILED|No data found", prefix);
+            } else {
+                log.info("{}|SUCCESS|Event found", prefix);
+            }
+            return event;
+        } catch (Exception e) {
+            log.error("{}|FAILED|Error finding event by slug: {}", prefix, e.getMessage(), e);
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public Optional<Event> findById(Long id) {
         String prefix = "[findById]|event_id=" + id;
         try {

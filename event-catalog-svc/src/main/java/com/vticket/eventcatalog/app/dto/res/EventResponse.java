@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class EventResponse {
     private Long id;
+    private String slug;
     private String title;
     private String description;
     private BigDecimal price;
@@ -25,4 +26,3 @@ public class EventResponse {
     private LocalDateTime updatedAt;
     private boolean active;
 }
-

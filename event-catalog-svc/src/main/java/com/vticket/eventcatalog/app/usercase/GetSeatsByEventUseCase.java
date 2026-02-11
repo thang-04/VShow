@@ -1,6 +1,5 @@
 package com.vticket.eventcatalog.app.usercase;
 
-import com.vticket.commonlibs.utils.Constant;
 import com.vticket.eventcatalog.domain.entity.Seat;
 import com.vticket.eventcatalog.domain.repository.SeatRepository;
 import com.vticket.eventcatalog.infra.redis.RedisService;
@@ -21,17 +20,13 @@ public class GetSeatsByEventUseCase {
     public List<Seat> getSeatsByEventId(Long eventId) {
         long start = System.currentTimeMillis();
         String prefix = "[GetSeatsByEventUseCase]|eventId=" + eventId;
-
         try {
-            String hashKey = String.format(Constant.RedisKey.SEAT_STATUS, eventId);
-            String zsetKey = Constant.RedisKey.SEAT_HOLD + eventId;
-
             Map<Object, Object> seatStatusMap = redisService.getSeatStatusHash(eventId);
 
             // Get seat list from DB
             List<Seat> seatList = seatRepository.findByEventId(eventId);
             if (seatList == null || seatList.isEmpty()) {
-                log.warn("{}|No seats found for eventId", prefix);
+                log.error("{}|No seats found for eventId", prefix);
                 return List.of();
             }
 
@@ -55,6 +50,8 @@ public class GetSeatsByEventUseCase {
             }
             if (!holdUpdate.isEmpty()) {
                 redisService.updateSeatStatus(eventId, holdUpdate);
+                //reload seatStatus
+                seatStatusMap.putAll(holdUpdate);
             }
 
             // Update seat status from Redis
@@ -65,7 +62,7 @@ public class GetSeatsByEventUseCase {
                         Seat.SeatStatus status = Seat.SeatStatus.valueOf(statusObj.toString());
                         seat.setStatus(status);
                     } catch (IllegalArgumentException e) {
-                        log.warn("{}|Invalid status for seat {}: {}", prefix, seat.getId(), statusObj);
+                        log.error("{}|Invalid status for seat {}: {}", prefix, seat.getId(), statusObj);
                     }
                 }
             }

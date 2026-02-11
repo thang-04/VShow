@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 public class Event {
     private Long id;
+    private String slug;
     private String title;
     private String description;
     private BigDecimal price;
@@ -37,4 +38,3 @@ public class Event {
         this.updatedAt = new Date();
     }
 }
-

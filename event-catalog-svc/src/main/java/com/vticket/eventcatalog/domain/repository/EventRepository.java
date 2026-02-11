@@ -11,6 +11,8 @@ public interface EventRepository {
 
     Optional<Event> findById(Long id);
 
+    Optional<Event> findBySlug(String slug);
+
     List<Event> findAll();
 
     List<Event> findByCategoryId(Long categoryId);

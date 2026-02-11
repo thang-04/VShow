@@ -16,8 +16,8 @@ public class Constant {
         public static final String REDIS_LIST_EVENT = "vt:list:event:%s";
         public static final String REDIS_EVENT_BY_ID = "vt:event:%s";
         public static final String SEAT_LOCK = "vt:seat:lock:";
-        public static final String SEAT_HOLD = "vt:seat:hold:";
-        public static final String SEAT_STATUS = "vt:seat_status:event:";
+        public static final String SEAT_HOLD = "vt:seat:hold:%s:%s";
+        public static final String SEAT_STATUS = "vt:seat:status:event:%s";
         public static final String BLACK_LIST_TOKEN = "vt:black:list:token:%s";
     }
 
@@ -50,7 +50,7 @@ public class Constant {
         public static final String EXCHANGE_MAIL = "mail.exchange";
         public static final String ROUTING_MAIL = "mail.routing";
 
-        //MAIL CONFIRM TICKET
+        // MAIL CONFIRM TICKET
         public static final String QUEUE_MAIL_TICKET = "mail.ticket.queue";
         public static final String EXCHANGE_MAIL_TICKET = "mail.ticket.exchange";
         public static final String ROUTING_MAIL_TICKET = "mail.ticket.routing";
