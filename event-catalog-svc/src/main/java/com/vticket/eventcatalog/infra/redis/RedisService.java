@@ -22,7 +22,6 @@ public class RedisService {
     private final RedisTemplate<String, String> redisEventTemplate;
     private final StringRedisTemplate stringRedisTemplate;
 
-    //Seat Status Hash Operations
     public Map<Object, Object> getSeatStatusHash(Long eventId) {
         String key = String.format(Constant.RedisKey.SEAT_STATUS, eventId);
         return redisUITemplate.opsForHash().entries(key);
@@ -42,13 +41,13 @@ public class RedisService {
         log.info("Cached seat status for eventId={}, seats={}", eventId, statusMap.size());
     }
 
-    //Seat Hold ZSet Operations
-    public boolean holdSeat(Long eventId, Long seatId, long timestamp) {
-        String key = Constant.RedisKey.SEAT_HOLD + eventId + "_" + seatId;
+    // Seat Hold ZSet Operations
+    public boolean holdSeat(Long eventId, Long seatId, long timestamp, long ttlMinutes) {
+        String key = String.format(Constant.RedisKey.SEAT_HOLD, eventId, seatId);
         String value = "seat_" + seatId + "_" + timestamp;
         Boolean added = redisUITemplate.opsForZSet().add(key, value, timestamp);
         if (Boolean.TRUE.equals(added)) {
-            redisUITemplate.expire(key, 3, TimeUnit.MINUTES);
+            redisUITemplate.expire(key, ttlMinutes, TimeUnit.MINUTES);
             log.info("Seat {} held for eventId={}", seatId, eventId);
             return true;
         }
@@ -56,7 +55,7 @@ public class RedisService {
     }
 
     public void releaseSeat(Long eventId, Long seatId) {
-        String key = Constant.RedisKey.SEAT_HOLD + eventId + "_" + seatId;
+        String key = String.format(Constant.RedisKey.SEAT_HOLD, eventId, seatId);
         redisUITemplate.opsForZSet().removeRangeByScore(key, 0, System.currentTimeMillis());
 
         Long size = redisUITemplate.opsForZSet().zCard(key);
@@ -77,7 +76,7 @@ public class RedisService {
     }
 
     public boolean checkSeatHold(Long eventId, Long seatId) {
-        String key = Constant.RedisKey.SEAT_HOLD + eventId + "_" + seatId;
+        String key = String.format(Constant.RedisKey.SEAT_HOLD, eventId, seatId);
         Long count = redisUITemplate.opsForZSet().zCard(key);
         return count != null && count > 0;
     }
@@ -92,13 +91,14 @@ public class RedisService {
         return held;
     }
 
-    //Atomic ordering for seat hold requests
+    // Atomic ordering for seat hold requests
     public Long incrementOrderKey(Long eventId, List<Long> seatIds) {
         String orderKey = "queue:event_" + eventId + "_hold_order_seatIds[" +
                 seatIds.stream()
                         .map(String::valueOf)
                         .reduce((a, b) -> a + "_" + b)
-                        .orElse("") + "]";
+                        .orElse("")
+                + "]";
         Long order = stringRedisTemplate.opsForValue().increment(orderKey);
         stringRedisTemplate.expire(orderKey, 5, TimeUnit.SECONDS);
         return order;

@@ -57,7 +57,6 @@ public class SubmitTicketUseCase {
             if (!missingSeatIds.isEmpty()) {
                 log.error("{}|Seats not found in DB: {}", prefix, missingSeatIds);
                 return null;
-
             }
 
             // Check seat availability
@@ -75,8 +74,8 @@ public class SubmitTicketUseCase {
                     .collect(Collectors.toList());
 
             if (!seatsToHold.isEmpty()) {
-                boolean holdSuccess = holdSeatsUseCase.holdSeats(request.getEventId(), seatsToHold);
-                if (!holdSuccess) {
+                String bookId = holdSeatsUseCase.holdSeats(request.getEventId(), seatsToHold);
+                if (bookId == null) {
                     log.error("{}|Failed to hold seats", prefix);
                     return null;
                 }
@@ -115,6 +114,8 @@ public class SubmitTicketUseCase {
                     s.setSeatNumber(seat.getSeatNumber());
                     s.setRowName(seat.getRowName());
                     s.setColumnNumber(seat.getColumnNumber());
+                    s.setStatus(seat.getStatus() != null ? seat.getStatus().name() : null);
+                    s.setPrice(seat.getPrice());
                     return s;
                 }).collect(Collectors.toList());
 

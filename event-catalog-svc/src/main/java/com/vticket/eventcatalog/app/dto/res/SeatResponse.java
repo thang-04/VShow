@@ -14,4 +14,6 @@ public class SeatResponse {
     private Integer seatNumber;
     private String rowName;
     private Integer columnNumber;
+    private String status;
+    private Double price;
 }

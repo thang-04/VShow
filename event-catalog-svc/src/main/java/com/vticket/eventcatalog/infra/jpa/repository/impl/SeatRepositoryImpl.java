@@ -24,7 +24,7 @@ public class SeatRepositoryImpl implements SeatRepository {
     public List<Seat> findByEventId(Long eventId) {
         String prefix = "[findByEventId]|event_id=" + eventId;
         try {
-            List<Seat> seats = seatEntityMapper.toDomainList(jpaRepository.findByEventId(eventId));
+            List<Seat> seats = seatEntityMapper.toDomainList(jpaRepository.findByEventIdOrderByRowName(eventId));
             log.info("{}|Found {} seats", prefix, seats.size());
             return seats;
         } catch (Exception e) {
@@ -37,10 +37,9 @@ public class SeatRepositoryImpl implements SeatRepository {
     public Optional<Seat> findById(Long id) {
         String prefix = "[findById]|seat_id=" + id;
         try {
-            Optional<Seat> seat = jpaRepository.findById(id)
-                    .map(seatEntityMapper::toDomain);
+            Optional<Seat> seat = jpaRepository.findById(id).map(seatEntityMapper::toDomain);
             if (seat.isEmpty()) {
-                log.warn("{}|No seat found", prefix);
+                log.error("{}|No seat found", prefix);
             } else {
                 log.info("{}|Seat found", prefix);
             }

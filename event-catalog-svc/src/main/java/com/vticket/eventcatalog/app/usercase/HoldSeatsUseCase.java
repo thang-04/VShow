@@ -16,13 +16,12 @@ public class HoldSeatsUseCase {
     private final RedisService redisService;
     private static final long SEAT_HOLD_TTL_MINUTES = 3;
 
-    public boolean holdSeats(Long eventId, List<Long> seatIds) {
+    public String holdSeats(Long eventId, List<Long> seatIds) {
         String prefix = "[HoldSeatsUseCase]|eventId=" + eventId + "|seatIds=" + seatIds;
         if (seatIds == null || seatIds.isEmpty()) {
             log.error("{}|Empty seat list", prefix);
-            return false;
+            return null;
         }
-
         List<Long> sortedSeatIds = new ArrayList<>(seatIds);
         Collections.sort(sortedSeatIds);
 
@@ -33,9 +32,8 @@ public class HoldSeatsUseCase {
         if (order != null && order > 1) {
             log.error("{}|Rejected because another hold seat (order={})", prefix, order);
             redisService.deleteOrderKey(eventId, sortedSeatIds);
-            return false;
+            return null;
         }
-
         try {
             // Check if seats already held
             List<Long> failedSeats = new ArrayList<>();
@@ -48,13 +46,13 @@ public class HoldSeatsUseCase {
             if (!failedSeats.isEmpty()) {
                 log.error("{}|Some seats already held: {}", prefix, failedSeats);
                 redisService.deleteOrderKey(eventId, sortedSeatIds);
-                return false;
+                return null;
             }
 
             // Hold all seats
             long now = System.currentTimeMillis();
             for (Long seatId : sortedSeatIds) {
-                boolean success = redisService.holdSeat(eventId, seatId, now);
+                boolean success = redisService.holdSeat(eventId, seatId, now, SEAT_HOLD_TTL_MINUTES);
                 if (!success) {
                     log.error("{}|Failed to hold seat {}", prefix, seatId);
                     // Release already held seats
@@ -64,7 +62,7 @@ public class HoldSeatsUseCase {
                         }
                     }
                     redisService.deleteOrderKey(eventId, sortedSeatIds);
-                    return false;
+                    return null;
                 }
             }
 
@@ -75,14 +73,14 @@ public class HoldSeatsUseCase {
             }
             redisService.updateSeatStatus(eventId, holdUpdate);
 
-            log.info("{}|All {} seats held successfully (order={})", prefix, sortedSeatIds.size(), order);
-            return true;
-
+            String bookId = UUID.randomUUID().toString();
+            log.info("{}|All {} seats held successfully (order={}). BookId: {}", prefix, sortedSeatIds.size(), order, bookId);
+            return bookId;
         } catch (Exception e) {
             log.error("{}|Exception: {}", prefix, e.getMessage(), e);
             // Release any held seats on error
             redisService.releaseSeats(eventId, sortedSeatIds);
-            return false;
+            return null;
         } finally {
             redisService.deleteOrderKey(eventId, sortedSeatIds);
         }
