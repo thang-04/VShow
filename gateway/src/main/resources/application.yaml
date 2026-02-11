@@ -75,6 +75,7 @@ security:
       - POST:/api/events/**:ADMIN
       - DELETE:/api/events/**:ADMIN
       - GET:/api/identity/profile
+      - POST:/api/events/bookings/submit
 
 # Logging
 logging:
@@ -84,3 +85,8 @@ logging:
     org.springframework.web: DEBUG  # Log Spring Web
     root: INFO  # Log all project
 
+app:
+  cors:
+    allowed-origins:
+      - "http://localhost:5173"
+      - "http://192.168.61.128"

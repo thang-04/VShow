@@ -77,31 +77,7 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
                 .onErrorResume(err ->
                         onError(exchange, "Invalid or expired token: " + err.getMessage(), HttpStatus.UNAUTHORIZED)
                 );
-
-//        try {
-//            SecretKey key = Keys.hmacShaKeyFor(signerKey.getBytes(StandardCharsets.UTF_8));
-//
-//            Claims claims = Jwts.parser()
-//                    .verifyWith(key)
-//                    .build()
-//                    .parseSignedClaims(token)  // Parse token và verify signature
-//                    .getPayload();  // Lấy payload
-//
-//            // Các service downstream có thể dùng thông tin này mà không cần parse token lại
-//            ServerHttpRequest modifiedRequest = request.mutate()
-//                    .header("X-User-Id", claims.getId())        // User ID từ token
-//                    .header("X-Username", claims.getSubject())  // Username từ token
-//                    .build();
-//
-//            return chain.filter(exchange.mutate().request(modifiedRequest).build());
-//        } catch (Exception e) {
-//            return onError(exchange, "Invalid or expired token: " + e.getMessage(), HttpStatus.UNAUTHORIZED);
-//        }
     }
-
-    //    private boolean isPublicPath(String path) {
-//        return PUBLIC_PATHS.stream().anyMatch(path::startsWith);
-//    }
 
     /**
      * @param exchange ServerWebExchange
