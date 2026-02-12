@@ -1,0 +1,45 @@
+# Docker ignore file - Bỏ qua các file/thư mục không cần thiết khi build Docker image
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Git
+.git/
+.gitignore
+
+# Build outputs
+*/target/
+!*/target/*.jar
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Documentation
+*.md
+!README.md
+
+# Docker files (không cần copy vào image)
+docker-compose*.yml
+Dockerfile
+.dockerignore
+docker/
+
+# Test files
+*/src/test/
+
+# Node modules (nếu có frontend)
+node_modules/
+
+

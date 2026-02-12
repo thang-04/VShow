@@ -87,6 +87,4 @@ logging:
 
 app:
   cors:
-    allowed-origins:
-      - "http://localhost:5173"
-      - "http://192.168.61.128"
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:5173}

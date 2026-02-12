@@ -1,0 +1,314 @@
+# docker-compose.yml - Cấu hình chạy toàn bộ VShow microservices
+# Sử dụng: docker-compose up -d
+
+version: '3.8'
+
+# =============================================================================
+# Networks - Mạng nội bộ cho các services giao tiếp
+# =============================================================================
+networks:
+  vshow-network:
+    driver: bridge
+    name: vshow-network
+
+# =============================================================================
+# Volumes - Lưu trữ persistent data
+# =============================================================================
+volumes:
+  mysql-data:
+    name: vshow-mysql-data
+  mongodb-data:
+    name: vshow-mongodb-data
+  redis-data:
+    name: vshow-redis-data
+  rabbitmq-data:
+    name: vshow-rabbitmq-data
+
+# =============================================================================
+# Services
+# =============================================================================
+services:
+
+  # ===========================================================================
+  # Infrastructure Services (Database, Cache, Message Queue)
+  # ===========================================================================
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: vshow-mysql
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-12345}
+      MYSQL_DATABASE: vshow_identity
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/init-db:/docker-entrypoint-initdb.d:ro
+    networks:
+      - vshow-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-12345}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: vshow-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: vshow_identity
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - vshow-network
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: vshow-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - vshow-network
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # RabbitMQ Message Broker
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: vshow-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672" # AMQP port
+      - "15672:15672" # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-guest}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - vshow-network
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "check_running" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ===========================================================================
+  # Application Services
+  # ===========================================================================
+
+  # Eureka Server - Service Discovery
+  eureka-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: eureka-server
+    image: vshow/eureka-server:latest
+    container_name: vshow-eureka-server
+    restart: unless-stopped
+    ports:
+      - "8761:8761"
+    environment:
+      SERVER_PORT: 8761
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - vshow-network
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8761/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # API Gateway
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: gateway
+    image: vshow/gateway:latest
+    container_name: vshow-gateway
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      SERVER_PORT: 8080
+      SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      JWT_JWKS_URL: http://identity-svc:8081/api/identity/auth/jwks
+      JWT_ISSUER: ${JWT_ISSUER:-vticket-identity}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:5173}
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - vshow-network
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Identity Service
+  identity-svc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: identity-svc
+    image: vshow/identity-svc:latest
+    container_name: vshow-identity-svc
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      SERVER_PORT: 8081
+      SPRING_PROFILES_ACTIVE: docker
+      # MySQL
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vshow_identity?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD:-12345}
+      # MongoDB
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/vshow_identity
+      # Redis
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      # RabbitMQ
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: ${RABBITMQ_USER:-guest}
+      SPRING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-guest}
+      # Eureka
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      # JWT
+      JWT_SIGNER_KEY: ${JWT_SIGNER_KEY:-your-secret-key-here}
+      # Email
+      MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - vshow-network
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8081/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+
+  # Event Catalog Service
+  event-catalog-svc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: event-catalog-svc
+    image: vshow/event-catalog-svc:latest
+    container_name: vshow-event-catalog-svc
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    environment:
+      SERVER_PORT: 8082
+      SPRING_PROFILES_ACTIVE: docker
+      # MySQL
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vshow_events?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD:-12345}
+      # Redis
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      # Eureka
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - vshow-network
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8082/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+
+  # Notification Service
+  notify-svc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: notify-svc
+    image: vshow/notify-svc:latest
+    container_name: vshow-notify-svc
+    restart: unless-stopped
+    ports:
+      - "8083:8083"
+    environment:
+      SERVER_PORT: 8083
+      SPRING_PROFILES_ACTIVE: docker
+      # RabbitMQ
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: ${RABBITMQ_USER:-guest}
+      SPRING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-guest}
+      # Email
+      MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - vshow-network
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8083/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s

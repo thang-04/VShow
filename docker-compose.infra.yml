@@ -1,0 +1,102 @@
+# docker-compose.infra.yml - Chỉ chạy infrastructure services cho development
+# Sử dụng: docker-compose -f docker-compose.infra.yml up -d
+
+version: '3.8'
+
+networks:
+  vshow-network:
+    driver: bridge
+    name: vshow-network
+
+volumes:
+  mysql-data:
+    name: vshow-mysql-data
+  mongodb-data:
+    name: vshow-mongodb-data
+  redis-data:
+    name: vshow-redis-data
+  rabbitmq-data:
+    name: vshow-rabbitmq-data
+
+services:
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: vshow-mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-12345}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/init-db:/docker-entrypoint-initdb.d:ro
+    networks:
+      - vshow-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-12345}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: vshow-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: vshow_identity
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - vshow-network
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: vshow-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - vshow-network
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # RabbitMQ Message Broker
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: vshow-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672" # AMQP port
+      - "15672:15672" # Management UI (http://localhost:15672)
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-guest}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - vshow-network
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "check_running" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
